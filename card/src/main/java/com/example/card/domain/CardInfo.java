@@ -1,4 +1,4 @@
-package com.example.consumption.domain;
+package com.example.card.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,8 +10,5 @@ public class CardInfo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cardId;
     private String cardName;
-
-    @ManyToOne
-    @JoinColumn(name = "BANK_ID")
-    private Bank bank;
+    private Long bankId;
 }
