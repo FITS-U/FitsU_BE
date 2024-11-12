@@ -1,6 +1,7 @@
 package com.example.consumption.controller;
 
 import com.example.consumption.response.AccountResponse;
+import com.example.consumption.response.BankResponse;
 import com.example.consumption.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,5 +20,10 @@ public class AccountController {
     @GetMapping("/accounts/{userId}/{accountId}")
     public List<AccountResponse> getUserAccount(@PathVariable UUID userId, @PathVariable Long accountId) {
         return accountService.getUserAccount(userId, accountId);
+    }
+
+    @GetMapping("/banks")
+    public List<BankResponse> getBanks() {
+        return accountService.getAllBanks();
     }
 }

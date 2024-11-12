@@ -8,11 +8,12 @@ import lombok.Getter;
 @Getter
 @Table(name = "CARD_PERFORM")
 public class CardPerform {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long performId;
     private String prevSales;
     private String annualFee;
 
     @OneToOne
     @JoinColumn(name = "CARD_ID")
-    @Id
     private CardInfo cardInfo;
 }
