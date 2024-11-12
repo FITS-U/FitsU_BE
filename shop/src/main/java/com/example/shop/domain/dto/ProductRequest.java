@@ -21,7 +21,7 @@ public record ProductRequest(
                 .price(price)
                 .createdAt(new Date())
                 .updatedAt(new Date())
-                .status(ProductStatus.AVAILABLE)
+                .status(this.status != null ? this.status : ProductStatus.AVAILABLE)
                 .build();
     }
 }
