@@ -1,6 +1,5 @@
 package com.example.card.controller;
 
-import com.example.card.domain.CardInfo;
 import com.example.card.response.CardResponse;
 import com.example.card.service.CardService;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +14,6 @@ import java.util.List;
 public class CardController {
 
     private final CardService cardService;
-
-    @GetMapping("/cards")
-    public List<CardResponse> getCards() {
-        return null;
-    }
 
     @GetMapping("/cards/{cardId}")
     public List<CardResponse> getInfoByCardId(@PathVariable Long cardId) {
