@@ -22,7 +22,6 @@ public record ProductRequest(
                 .createdAt(new Date())
                 .updatedAt(new Date())
                 .status(ProductStatus.AVAILABLE)
-                .status(ProductStatus.RESERVED)
                 .build();
     }
 }
