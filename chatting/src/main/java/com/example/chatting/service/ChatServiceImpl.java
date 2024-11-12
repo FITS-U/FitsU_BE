@@ -20,7 +20,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<ChatResponse> getChatRoomList(UUID userId) {
-        List<ChatRoom> all = chatRepository.findAll();
+        List<ChatRoom> all = chatRepository.findByUserId(userId);
         List<ChatResponse> list = all.stream().map(ChatResponse::from).toList();
         return list;
     }
@@ -38,7 +38,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public ChatResponse addChatRoom(ChatRoom chatRoom, Long productId) {
+    public ChatResponse addChatRoom(ChatRoom chatRoom) {
         ChatRoom save = chatRepository.save(chatRoom);
         return ChatResponse.from(save);
     }

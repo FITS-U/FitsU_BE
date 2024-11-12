@@ -12,6 +12,6 @@ public interface ChatService {
     List<ChatResponse> getChatRoomList(UUID userId);
     List<ChatResponse> getRoomById(Long chatRoomId, UUID userId);
     int getCountRooms(Long productId);
-    ChatResponse addChatRoom(ChatRoom chatRoom, Long productId);
+    ChatResponse addChatRoom(ChatRoom chatRoom);
     void deleteChatRoom(Long chatRoomId);
 }

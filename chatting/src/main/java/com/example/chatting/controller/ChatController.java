@@ -16,7 +16,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @GetMapping("/chats/{userId}")
-    public List<ChatResponse> getChatRoomList(UUID userId) {
+    public List<ChatResponse> getChatRoomList(@PathVariable UUID userId) {
         return chatService.getChatRoomList(userId);
     }
 
@@ -25,17 +25,17 @@ public class ChatController {
         return chatService.getRoomById(chatRoomId, userId);
     }
 
-    @GetMapping("/chats/{productId)")
+    @GetMapping("/chats/count/{productId}")
     public int getCountRooms(@PathVariable Long productId) {
         return chatService.getCountRooms(productId);
     }
 
-    @PostMapping("/chats/{productId}")
-    public ChatResponse addChatRoom(@PathVariable ChatRoom chatRoom, @PathVariable Long productId) {
-        return chatService.addChatRoom(chatRoom, productId);
+    @PostMapping("/chats")
+    public ChatResponse addChatRoom(@RequestBody ChatRoom chatRoom) {
+        return chatService.addChatRoom(chatRoom);
     }
 
-    @DeleteMapping("/chats/{userId}/{chatRoomId}")
+    @DeleteMapping("/chats/{chatRoomId}")
     public void deleteChatRoom(@PathVariable Long chatRoomId) {
         chatService.deleteChatRoom(chatRoomId);
     }

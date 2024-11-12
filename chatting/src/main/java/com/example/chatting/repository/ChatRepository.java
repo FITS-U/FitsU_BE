@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface ChatRepository extends JpaRepository<ChatRoom, Long> {
     int countByProductId(Long productId);
     List<ChatRoom> findByChatRoomIdAndUserId(Long roomId, UUID userId);
+    List<ChatRoom> findByUserId(UUID userId);
 }
