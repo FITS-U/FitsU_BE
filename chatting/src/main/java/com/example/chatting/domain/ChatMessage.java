@@ -19,14 +19,18 @@ import java.util.UUID;
 public class ChatMessage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
-    private UUID userId;
     private String content;
     private String messageType;
+    private String imageUrl;
     private Boolean read;
     @CreatedDate @Builder.Default
     private LocalDateTime createdAt=LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "CHATROOM_ID")
+    @JoinColumn(name = "CHAT_ROOM_ID")
     private ChatRoom chatRoom;
+
+    @ManyToOne
+    @JoinColumn(name = "SENDER_ID")
+    private User user;
 }

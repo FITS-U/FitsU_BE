@@ -19,8 +19,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // stomp 접속 주소 url = ws://localhost:8080/ws
-        registry.addEndpoint("/ws") // 연결될 엔드포인트
-                .setAllowedOrigins("*");
+        registry.addEndpoint("/ws") // 클라이언트가 연결할 엔드포인트
+                .setAllowedOrigins("*")
+                .withSockJS(); // webSocket이 지원되지 않는 브라우저 대비
     }
 }
 

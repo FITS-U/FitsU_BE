@@ -1,15 +1,16 @@
 package com.example.chatting.service;
 
+import com.example.chatting.domain.ChatMessage;
 import com.example.chatting.domain.ChatRoom;
+import com.example.chatting.repository.ChatMessageRepository;
 import com.example.chatting.repository.ChatRepository;
+import com.example.chatting.request.ChatRoomRequest;
 import com.example.chatting.response.ChatResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ import java.util.stream.Stream;
 public class ChatServiceImpl implements ChatService {
 
     private final ChatRepository chatRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     @Override
     public List<ChatResponse> getChatRoomList(UUID userId) {
@@ -38,7 +40,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public ChatResponse addChatRoom(ChatRoom chatRoom) {
+    public ChatResponse addChatRoom(ChatRoomRequest request) {
+        ChatRoom chatRoom = request.toEntity();
         ChatRoom save = chatRepository.save(chatRoom);
         return ChatResponse.from(save);
     }
@@ -46,5 +49,10 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void deleteChatRoom(Long chatRoomId) {
         chatRepository.deleteById(chatRoomId);
+    }
+
+    @Override
+    public ChatMessage saveMessage(ChatMessage message) {
+        return chatMessageRepository.save(message);
     }
 }
