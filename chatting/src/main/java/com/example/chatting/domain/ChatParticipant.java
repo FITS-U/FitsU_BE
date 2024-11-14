@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -16,8 +18,5 @@ public class ChatParticipant {
     @ManyToOne
     @JoinColumn(name = "CHAT_ROOM_ID")
     private ChatRoom chatRoom;
-
-    @ManyToOne
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    private UUID userId;
 }

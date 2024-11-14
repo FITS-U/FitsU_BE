@@ -29,11 +29,4 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatMessage> chatMessages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "chatRoom")
-    private List<ChatParticipant> participants = new ArrayList<>();
-
-//    @ManyToOne
-//    @JoinColumn(name = "USER_ID")
-//    private User user;
-
 }

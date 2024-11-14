@@ -4,6 +4,7 @@ import com.example.chatting.domain.ChatRoom;
 
 import java.util.UUID;
 
+
 public record ChatRoomRequest(
         Long productId,
         UUID userId

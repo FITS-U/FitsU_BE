@@ -20,6 +20,6 @@ public class StompChatController {
     public void sendChatMessage(ChatMessage message, SimpMessageHeaderAccessor headerAccessor) {
         ChatMessage saveMessage = chatService.saveMessage(message);
 
-        messagingTemplate.convertAndSendToUser(saveMessage.getUser().getUserName(), "/sub/messages", saveMessage);
+        messagingTemplate.convertAndSendToUser(saveMessage.getUserId().toString(), "/sub/messages", saveMessage);
     }
 }
