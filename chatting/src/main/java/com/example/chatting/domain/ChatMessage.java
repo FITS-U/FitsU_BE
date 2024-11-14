@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -23,11 +22,11 @@ public class ChatMessage {
     private String content;
     private String messageType;
     private String imageUrl;
-    private Boolean read;
+    private Boolean isRead;
     @CreatedDate @Builder.Default
     private LocalDateTime createdAt=LocalDateTime.now();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CHAT_ROOM_ID")
     private ChatRoom chatRoom;
 

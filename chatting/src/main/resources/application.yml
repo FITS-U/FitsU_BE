@@ -6,13 +6,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
     show-sql: true
 server:
   port: 8083
-#jwt:
-#  secret: asdfaerrwesdfserw2asdfaerrwesdfserw2321
-#  expiration: 86400000
+jwt:
+  secret: asdfaerrwesdfserw2asdfaerrwesdfserw2321
+  expiration: 86400000
