@@ -1,4 +1,4 @@
-package com.example.user.global;
+package com.example.auth.global;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,7 +11,6 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-
     private final long expiration;
     private final SecretKey key;
 
@@ -22,16 +21,17 @@ public class JwtUtils {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateToken(String userName) {
+    //   generate-token
+    public String generateToken(String username){
         Date expirationDate = new Date(System.currentTimeMillis() + expiration);
         return Jwts.builder()
-                .subject(userName)
+                .subject(username)
                 .expiration(expirationDate)
                 .signWith(key)
                 .compact();
     }
-
-    public String parseToken(String token) {
+    //   parse-token
+    public String parseToken(String token){
         Claims payload = (Claims) Jwts.parser()
                 .verifyWith(key)
                 .build()
@@ -39,4 +39,5 @@ public class JwtUtils {
                 .getPayload();
         return payload.getSubject();
     }
+
 }

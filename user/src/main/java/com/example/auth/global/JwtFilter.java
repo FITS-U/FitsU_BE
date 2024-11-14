@@ -1,8 +1,7 @@
-package com.example.user.global;
+package com.example.auth.global;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,28 +18,26 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-
     private final JwtUtils jwtUtils;
     private final UserDetailsService userService;
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
         String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.startsWith("Bearer ")) {
+        if(authorization != null && authorization.startsWith("Bearer ")){
             String token = authorization.substring(7);
-            try {
+            try{
                 String username = jwtUtils.parseToken(token);
-                UserDetails userDetails = userService.loadUserByUsername(username);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                UserDetails userDetails = userService.loadUserByUsername(authorization);
+                Authentication authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+            }catch (Exception e){}
         }
+
         filterChain.doFilter(request, response);
     }
 }

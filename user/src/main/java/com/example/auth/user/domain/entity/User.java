@@ -1,4 +1,4 @@
-package com.example.user.user.domain.entity;
+package com.example.auth.user.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Table(name = "User")
 public class User {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID userId;
 
     @Column(nullable = false)

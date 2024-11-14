@@ -41,6 +41,7 @@ dependencies {
 
 	// sms api
 	implementation 'net.nurigo:sdk:4.3.0'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
 }
 
 tasks.named('test') {

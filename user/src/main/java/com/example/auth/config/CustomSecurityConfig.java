@@ -1,6 +1,6 @@
-package com.example.user.config;
+package com.example.auth.config;
 
-import com.example.user.global.JwtFilter;
+import com.example.auth.global.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,23 +13,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class CustomSecurityConfig {
-
     private final UserDetailsService userService;
     private final JwtFilter jwtFilter;
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain
+    securityFilterChain(HttpSecurity http) throws Exception {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
-        http.userDetailsService(userService);
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.userDetailsService(userService);
+        http.addFilterBefore(jwtFilter,
+                UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(
                 request -> request
-                        .requestMatchers(
-                                "/api/v1/auth/login",
-                                "/api/v1/auth/register",
-                                "/api/v1/auth/admin/login"
-                        )
+                        .requestMatchers("/api/v1/auth/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
