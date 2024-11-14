@@ -11,10 +11,12 @@ public record CardResponse(
         String cardName,
         Long bankId,
         String description,
-        String category,
+        Long categoryId,
         Double discountRate,
         String prevSales,
-        String annualFee) {
+        String annualFee,
+        String maxDiscount
+        ) {
 
     public static CardResponse from(CardInfo cardInfo, Benefit benefit, CardPerform cardPerform) {
         return new CardResponse(
@@ -22,10 +24,11 @@ public record CardResponse(
                 cardInfo.getCardName(),
                 cardInfo.getBankId(),
                 benefit.getDescription(),
-                benefit.getCategory(),
+                benefit.getCategoryId(),
                 benefit.getDiscountRate(),
                 cardPerform.getPrevSales(),
-                cardPerform.getAnnualFee());
+                cardPerform.getAnnualFee(),
+                cardPerform.getMaxDiscount());
     }
 
 }

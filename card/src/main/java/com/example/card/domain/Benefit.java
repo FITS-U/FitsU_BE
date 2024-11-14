@@ -10,7 +10,7 @@ public class Benefit {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long benefitId;
     private String description;
-    private String category;
+    private Long categoryId;
     private Double discountRate;
 
     @OneToOne
