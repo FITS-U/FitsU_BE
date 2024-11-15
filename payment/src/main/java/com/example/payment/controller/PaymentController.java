@@ -20,35 +20,37 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/payments")
 public class PaymentController {
     private final PaymentService paymentService;
 
     // 입출금 내역 목록
-    @GetMapping("/payments/{userId}")
+    @GetMapping("users/{userId}")
     public List<PaymentResponse> getAllPayments(@PathVariable UUID userId) {
         return paymentService.getAllPayments(userId);
     }
 
     //각 입출금 내역 별 상세
-    @GetMapping("/payments/details/{userId}/{payId}")
+    @GetMapping("/details/users/{userId}/pay/{payId}")
     public List<PaymentResponse> getPaymentByPayId(@PathVariable UUID userId, @PathVariable Long payId) {
         return paymentService.getPaymentsDetails(userId, payId);
     }
 
-    @GetMapping("/payments/mth-spend/{userId}/{startDate}/{endDate}")
-    public Double getMonthSpend(@PathVariable UUID userId, @PathVariable LocalDateTime startDate, @PathVariable LocalDateTime endDate) {
-        return paymentService.getMonthSpend(userId, startDate, endDate);
+    // 월 지출 금액 /mth-spend/users/{userId}?months=1 or /mth-spend/users/{userId}/months/1
+    @GetMapping("/mth-spend/users/{userId}")
+    public Double getMonthSpend(@PathVariable UUID userId) {
+        return paymentService.getMonthSpend(userId);
     }
 
-    // 계좌별 소비 내역
-    @GetMapping("/payments/{userId}/{accountId}")
+    // 한 계좌의 소비 내역
+    @GetMapping("/users/{userId}/accounts/{accountId}")
     public ResponseEntity<Page<PaymentResponse>> getPaymentByAccountId(@PathVariable UUID userId, @PathVariable Long accountId, Pageable pageable) {
         Page<PaymentResponse> response = paymentService.getByAccountId(userId, accountId);
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/payments/category/{userId}/{categoryId}")
+    // 한 카테고리의 세부 결제 내역
+    @GetMapping("/users/{userId}/category/{categoryId}")
     public List<PaymentResponse> getPaymentsByCategory(@PathVariable UUID userId, @PathVariable Long categoryId) {
         return paymentService.getCategoryPaymentDetails(userId, categoryId);
     }
