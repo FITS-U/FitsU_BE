@@ -4,13 +4,16 @@ import com.example.payment.domain.Payment;
 import com.example.payment.repository.PaymentRepository;
 import com.example.payment.response.PaymentResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,10 +37,17 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public Double getMonthSpend(UUID userId, LocalDateTime startDate, LocalDateTime endDate) {
-//        LocalDateTime startDate = ;
-        return null;
+    public Double getMonthSpend(UUID userId) {
+        return 0.0;
     }
+
+//    @Override
+//    public Double getMonthSpend(UUID userId, int month, int year) {
+//        LocalDate startDate = LocalDate.of(year, month, 1);
+//        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+//        paymentRepository.findByUserIdAndDateBetween(userId, startDate, endDate);
+//        return null;
+//    }
 
     @Override
     public Page<PaymentResponse> getByAccountId(UUID userId, Long accountId) {
@@ -47,7 +57,7 @@ public class PaymentServiceImpl implements PaymentService{
     }
 
     @Override
-    public Page<PaymentResponse> getCategoryPayment(UUID userId, LocalDateTime createdAt) {
+    public List<PaymentResponse> getCategoryPayment(UUID userId) {
         Pageable pageable = PageRequest.of(0,10);
 
         return null;

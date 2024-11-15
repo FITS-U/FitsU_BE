@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
@@ -26,7 +27,7 @@ public class Payment{
     private UUID userId;
     private String recipient;
     private Double price;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long categoryId;
     private Long accountId;
     private Long userCardId;

@@ -8,10 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -36,9 +33,9 @@ public class PaymentController {
         return paymentService.getPaymentsDetails(userId, payId);
     }
 
-    // 월 지출 금액 /mth-spend/users/{userId}?months=1 or /mth-spend/users/{userId}/months/1
+    // 월 지출 금액 /mth-spend/users/{userId}?months=1&year=2024 or /mth-spend/users/{userId}/months/1
     @GetMapping("/mth-spend/users/{userId}")
-    public Double getMonthSpend(@PathVariable UUID userId) {
+    public Double getMonthSpend(@PathVariable UUID userId, @RequestParam int months, @RequestParam int years) {
         return paymentService.getMonthSpend(userId);
     }
 
@@ -54,4 +51,9 @@ public class PaymentController {
     public List<PaymentResponse> getPaymentsByCategory(@PathVariable UUID userId, @PathVariable Long categoryId) {
         return paymentService.getCategoryPaymentDetails(userId, categoryId);
     }
+
+    @GetMapping("/payments/mth-spend/users/{userId}")
+    public List<PaymentResponse> getCategoryPayments(@PathVariable UUID userId) {
+        return paymentService.getCategoryPayment(userId);
+    };
 }

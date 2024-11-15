@@ -16,8 +16,8 @@ import java.util.UUID;
 public interface PaymentService {
     List<PaymentResponse> getAllPayments(UUID userId);
     List<PaymentResponse> getPaymentsDetails(UUID userId, Long payId);
-    Double getMonthSpend(UUID userId, LocalDateTime startDate, LocalDateTime endDate);
+    Double getMonthSpend(UUID userId);
     Page<PaymentResponse> getByAccountId(UUID userId, Long accountId);
-    Page<PaymentResponse> getCategoryPayment(UUID userId, LocalDateTime createdAt);
+    List<PaymentResponse> getCategoryPayment(UUID userId);
     List<PaymentResponse> getCategoryPaymentDetails(UUID userId, Long categoryId);
 }

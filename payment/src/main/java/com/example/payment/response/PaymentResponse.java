@@ -2,13 +2,14 @@ package com.example.payment.response;
 
 import com.example.payment.domain.Payment;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public record PaymentResponse(
         Long payId,
         Double price,
         String recipient,
-        Date createdAt,
+        LocalDateTime createdAt,
         Long accountId,
         Long categoryId,
         Long userCardId
