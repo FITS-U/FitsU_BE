@@ -8,12 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -21,10 +17,11 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment{
+public class Transaction {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long payId;
+    private Long transactionId;
     private UUID userId;
+    private String transactionType;
     private String recipient;
     private Double price;
     private LocalDateTime createdAt;
