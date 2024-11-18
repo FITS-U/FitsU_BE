@@ -28,9 +28,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<BankResponse> getAllBanks() {
-        List<Bank> banks = bankRepository.findAll();
+    public List<BankResponse> getBankByBankId(Long bankId) {
+        List<Bank> banks = bankRepository.findByBankId(bankId);
         List<BankResponse> list = banks.stream().map(BankResponse::from).toList();
         return list;
+    }
+
+    @Override
+    public List<BankResponse> getAllBanks() {
+        List<Bank> bankList = bankRepository.findAll();
+        List<BankResponse> list = bankList.stream().map(BankResponse::from).toList();
+        return list;
+    }
+
+    @Override
+    public Boolean isAccountLinked(UUID userId, Long accountId) {
+        return accountRepository.existsByUserIdAndAccountIdAndIsLinkedTrue(userId, accountId);
     }
 }

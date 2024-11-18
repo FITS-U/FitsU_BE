@@ -11,5 +11,7 @@ import java.util.UUID;
 @Service
 public interface AccountService {
     List<AccountResponse> getUserAccount(UUID userId, Long accountId);
+    List<BankResponse> getBankByBankId(Long bankId);
     List<BankResponse> getAllBanks();
+    Boolean isAccountLinked(UUID userId, Long accountId);
 }

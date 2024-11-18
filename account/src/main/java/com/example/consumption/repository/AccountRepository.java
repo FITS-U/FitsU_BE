@@ -10,4 +10,6 @@ import java.util.UUID;
 
 public interface AccountRepository extends JpaRepository<UserAccount, Long> {
     List<UserAccount> findByUserIdAndAccountId(UUID userId, Long accountId);
+
+    Boolean existsByUserIdAndAccountIdAndIsLinkedTrue(UUID userId, Long accountId);
 }

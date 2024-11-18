@@ -21,6 +21,7 @@ public class UserAccount {
     private String accName;
     private Double balance;
     private UUID userId;
+    private Boolean isLinked;
 
     @ManyToOne
     @JoinColumn(name = "BANK_ID")
