@@ -14,6 +14,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/transaction")
+@CrossOrigin("http://localhost:3000")
 public class TransactionController {
     private final TransactionService transactionService;
 
