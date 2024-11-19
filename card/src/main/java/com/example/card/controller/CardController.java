@@ -19,7 +19,7 @@ public class CardController {
     private final CardService cardService;
 
     @GetMapping("/cards/{cardId}")
-    public CardResponse getCardDetails(@PathVariable Long cardId) {
+    public List<CardResponse> getCardDetails(@PathVariable Long cardId) {
         return cardService.getCardDetails(cardId);
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CardRepository extends JpaRepository<CardInfo, Long> {
 
@@ -19,5 +21,5 @@ public interface CardRepository extends JpaRepository<CardInfo, Long> {
             "LEFT JOIN MainCategory mc ON cc.mainCategory.mainCtgId = mc.mainCtgId " +
             "LEFT JOIN SubCategory sc ON mc.mainCtgId = sc.mainCategory.mainCtgId " +
             "WHERE ci.cardId = :cardId")
-    CardResponse findCardDetails(@Param("cardId") Long cardId);
+    List<CardResponse> findCardDetails(@Param("cardId") Long cardId);
 }
