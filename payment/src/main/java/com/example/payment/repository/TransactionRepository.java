@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
-    List<Transaction> getAllByUserId(UUID userId);
+    List<Transaction> findAllByUserId(UUID userId);
     List<Transaction> findByUserIdAndTransactionId(UUID userId, Long transactionId);
     Page<Transaction> findByUserIdAndAccountId(UUID userId , Long accountId, Pageable pageable);
     List<Transaction> findByUserIdAndCategoryId(UUID userId, Long categoryId);
