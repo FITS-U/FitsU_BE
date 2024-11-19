@@ -8,5 +8,5 @@ import java.util.List;
 
 @Service
 public interface CardService {
-    List<CardResponse> getInfoByCardId(Long cardId);
+    CardResponse getCardDetails(Long cardId);
 }

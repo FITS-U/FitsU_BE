@@ -12,9 +12,8 @@ public class CardPerform {
     private Long performId;
     private String prevSales;
     private String annualFee;
-    private String maxDiscount;
 
     @OneToOne
-    @JoinColumn(name = "CARD_ID")
+    @JoinColumn(name = "card_id")
     private CardInfo cardInfo;
 }

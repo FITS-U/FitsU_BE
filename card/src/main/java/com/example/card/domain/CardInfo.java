@@ -11,4 +11,7 @@ public class CardInfo {
     private Long cardId;
     private String cardName;
     private Long bankId;
+    private String benSummary;
+
+
 }

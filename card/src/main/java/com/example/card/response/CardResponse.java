@@ -1,8 +1,6 @@
 package com.example.card.response;
 
-import com.example.card.domain.Benefit;
-import com.example.card.domain.CardInfo;
-import com.example.card.domain.CardPerform;
+import com.example.card.domain.*;
 import lombok.Builder;
 
 @Builder
@@ -10,25 +8,36 @@ public record CardResponse(
         Long cardId,
         String cardName,
         Long bankId,
-        String description,
-        Long categoryId,
-        Double discountRate,
+        String benSummary,
         String prevSales,
         String annualFee,
-        String maxDiscount
+        String description,
+        Long mainCtgId,
+        String mainCtgName,
+        Long subCtgId,
+        String subCtgName
         ) {
 
-    public static CardResponse from(CardInfo cardInfo, Benefit benefit, CardPerform cardPerform) {
+    public static CardResponse from(
+            CardInfo cardInfo,
+            CardPerform cardPerform,
+            BenefitDesc benefitDesc,
+            MainCategory mainCategory,
+            SubCategory subCategory
+            ) {
         return new CardResponse(
                 cardInfo.getCardId(),
                 cardInfo.getCardName(),
                 cardInfo.getBankId(),
-                benefit.getDescription(),
-                benefit.getCategoryId(),
-                benefit.getDiscountRate(),
+                cardInfo.getBenSummary(),
                 cardPerform.getPrevSales(),
                 cardPerform.getAnnualFee(),
-                cardPerform.getMaxDiscount());
+                benefitDesc.getDescription(),
+                mainCategory.getMainCtgId(),
+                mainCategory.getMainCtgName(),
+                subCategory.getSubCtgId(),
+                subCategory.getSubCtgName());
+
     }
 
 }
