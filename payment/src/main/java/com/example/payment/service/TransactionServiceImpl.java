@@ -21,26 +21,26 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
 
     @Override
-    public List<TransactionResponse> getAllPayments(String userId) {
-        List<Transaction> payments = transactionRepository.findAllByUserId(UUID.fromString(userId));
+    public List<TransactionResponse> getAllPayments(UUID userId) {
+        List<Transaction> payments = transactionRepository.findByUserId(userId);
         List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
         return list;
     }
 
     @Override
-    public List<TransactionResponse> getPaymentsDetails(String userId, Long transactionId) {
-        List<Transaction> payments = transactionRepository.findByUserIdAndTransactionId(UUID.fromString(userId), transactionId);
+    public List<TransactionResponse> getPaymentsDetails(UUID userId, Long transactionId) {
+        List<Transaction> payments = transactionRepository.findByUserIdAndTransactionId(userId, transactionId);
         List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
         return list;
     }
 
     @Override
-    public Double getMonthSpend(String userId, int months, int years) {
+    public Double getMonthSpend(UUID userId, int months, int years) {
         YearMonth yearMonth = YearMonth.of(years, months);
         LocalDateTime startOfMonth = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = yearMonth.atEndOfMonth().atTime(23, 59, 59);
 
-        List<Transaction> transactions = transactionRepository.findByUserIdAndCreatedAtBetween(UUID.fromString(userId), startOfMonth, endOfMonth);
+        List<Transaction> transactions = transactionRepository.findByUserIdAndCreatedAtBetween(userId, startOfMonth, endOfMonth);
         double sum = transactions.stream()
                 .filter(transaction -> "지출".equals(transaction.getTransactionType()))
                 .mapToDouble(Transaction::getPrice)
@@ -50,26 +50,26 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     @Override
-    public Page<TransactionResponse> getByAccountId(String userId, Long accountId) {
+    public Page<TransactionResponse> getByAccountId(UUID userId, Long accountId) {
         Pageable pageable = PageRequest.of(0,10);
-        Page<Transaction> payments = transactionRepository.findByUserIdAndAccountId(UUID.fromString(userId), accountId, pageable);
+        Page<Transaction> payments = transactionRepository.findByUserIdAndAccountId(userId, accountId, pageable);
         return payments.map(TransactionResponse::from);
     }
 
     @Override
-    public List<TransactionResponse> getCategoryPaymentDetails(String userId, Long categoryId) {
-        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryId(UUID.fromString(userId), categoryId);
+    public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId) {
+        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
         List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
         return list;
     }
 
     @Override
-    public Double getCategoryPayment(String userId, int months, int years, Long categoryId) {
+    public Double getCategoryPayment(UUID userId, int months, int years, Long categoryId) {
         YearMonth yearMonth = YearMonth.of(years, months);
         LocalDateTime startOfMonth = yearMonth.atDay(1).atStartOfDay();
         LocalDateTime endOfMonth = yearMonth.atEndOfMonth().atTime(23, 59, 59);
 
-        List<Transaction> transactions = transactionRepository.findByUserIdAndCategoryIdAndCreatedAtBetween(UUID.fromString(userId), categoryId, startOfMonth, endOfMonth);
+        List<Transaction> transactions = transactionRepository.findByUserIdAndCategoryIdAndCreatedAtBetween(userId, categoryId, startOfMonth, endOfMonth);
         double sum = transactions.stream()
                 .filter(transaction -> "지출".equals(transaction.getTransactionType()))
                 .mapToDouble(Transaction::getPrice)
