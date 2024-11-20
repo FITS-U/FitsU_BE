@@ -18,7 +18,8 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @GetMapping("/users/{userId}/accounts/{accountId}")
+    // 유저의 모든 계좌 정보 조회
+    @GetMapping("/accounts/users/{userId}")
     public List<AccountResponse> getUserAccount(@PathVariable UUID userId, @PathVariable Long accountId) {
         return accountService.getUserAccount(userId, accountId);
     }
@@ -28,14 +29,4 @@ public class AccountController {
         return accountService.getAllBanks();
     }
 
-    @GetMapping("/banks/{bankId}")
-    public List<BankResponse> getBanksByBankId(@PathVariable Long bankId) {
-        return accountService.getBankByBankId(bankId);
-    }
-
-    @GetMapping("/accounts/{accountId}/check-linked")
-    public Boolean checkLinkedAccount(@RequestParam UUID userId, @PathVariable Long accountId) {
-        boolean isLinked = accountService.isAccountLinked(userId, accountId);
-        return isLinked;
-    }
 }
