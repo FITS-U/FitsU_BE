@@ -1,9 +1,11 @@
 package com.example.payment.service;
 
 import com.example.payment.domain.Transaction;
+import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.repository.TransactionRepository;
 import com.example.payment.response.TransactionResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,20 +36,6 @@ public class TransactionServiceImpl implements TransactionService {
         return list;
     }
 
-    @Override
-    public Double getMonthSpend(UUID userId, int months, int years) {
-        YearMonth yearMonth = YearMonth.of(years, months);
-        LocalDateTime startOfMonth = yearMonth.atDay(1).atStartOfDay();
-        LocalDateTime endOfMonth = yearMonth.atEndOfMonth().atTime(23, 59, 59);
-
-        List<Transaction> transactions = transactionRepository.findByUserIdAndCreatedAtBetween(userId, startOfMonth, endOfMonth);
-        double sum = transactions.stream()
-                .filter(transaction -> "지출".equals(transaction.getTransactionType()))
-                .mapToDouble(Transaction::getPrice)
-                .sum();
-        return sum;
-    }
-
 
     @Override
     public Page<TransactionResponse> getByAccountId(UUID userId, Long accountId) {
@@ -57,23 +45,27 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId) {
-        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
+    public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long mainCtgId) {
+        List<Transaction> payments = transactionRepository.findByUserIdAndMainCtgId(userId, mainCtgId);
         List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
         return list;
     }
 
-    @Override
-    public Double getCategoryPayment(UUID userId, int months, int years, Long categoryId) {
-        YearMonth yearMonth = YearMonth.of(years, months);
-        LocalDateTime startOfMonth = yearMonth.atDay(1).atStartOfDay();
-        LocalDateTime endOfMonth = yearMonth.atEndOfMonth().atTime(23, 59, 59);
 
-        List<Transaction> transactions = transactionRepository.findByUserIdAndCategoryIdAndCreatedAtBetween(userId, categoryId, startOfMonth, endOfMonth);
-        double sum = transactions.stream()
-                .filter(transaction -> "지출".equals(transaction.getTransactionType()))
-                .mapToDouble(Transaction::getPrice)
-                .sum();
-        return sum;
+    @Override
+    public List<MonthlySpendDto> getMonthlySpendingByCategoryId(UUID userId, int year, int month) {
+        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
+        List<Object[]> spending = transactionRepository.findMonthlySpendingByCreatedAt(userId, startDate, endDate);
+        List<MonthlySpendDto> list = spending.stream().map(MonthlySpendDto::from).toList();
+        return list;
+    }
+
+    @Override
+    public Double getMonthlySpending(UUID userId, int year, int month) {
+        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
+        Double totalMonthlySpending = transactionRepository.findTotalMonthlySpending(userId, startDate, endDate);
+        return totalMonthlySpending;
     }
 }

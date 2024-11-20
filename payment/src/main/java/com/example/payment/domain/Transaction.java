@@ -25,7 +25,7 @@ public class Transaction {
     private String recipient;
     private Double price;
     private LocalDateTime createdAt;
-    private Long categoryId;
+    private Long mainCtgId;
     private Long accountId;
     private Long userCardId;
 }

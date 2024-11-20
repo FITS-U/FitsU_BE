@@ -10,7 +10,7 @@ public record TransactionResponse(
         String recipient,
         LocalDateTime createdAt,
         Long accountId,
-        Long categoryId,
+        Long mainCtgId,
         Long userCardId,
         String transactionType
 ) {
@@ -21,7 +21,7 @@ public record TransactionResponse(
                 transaction.getRecipient(),
                 transaction.getCreatedAt(),
                 transaction.getAccountId(),
-                transaction.getCategoryId(),
+                transaction.getMainCtgId(),
                 transaction.getUserCardId(),
                 transaction.getTransactionType()
         );
