@@ -44,4 +44,10 @@ public class AccountController {
     public List<AccountResponse> getLinkedUserAccounts(@PathVariable String userId) {
         return accountService.getLinkedUserAccounts(UUID.fromString(userId));
     }
+
+    @GetMapping("/accounts/unlinked/users/{userId}")
+    public List<AccountResponse> getUnlinkedUserAccounts(@PathVariable String userId) {
+        return accountService.getUnlinkedUserAccounts(UUID.fromString(userId));
+    }
+
 }
