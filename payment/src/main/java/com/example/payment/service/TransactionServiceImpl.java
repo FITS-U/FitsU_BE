@@ -66,6 +66,6 @@ public class TransactionServiceImpl implements TransactionService {
         LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
         LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
         Double totalMonthlySpending = transactionRepository.findTotalMonthlySpending(userId, startDate, endDate);
-        return totalMonthlySpending;
+        return (totalMonthlySpending != null ? totalMonthlySpending : 0.0);
     }
 }
