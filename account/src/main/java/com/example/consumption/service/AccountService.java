@@ -18,5 +18,5 @@ public interface AccountService {
     Optional<BankResponse> getBankByBankId(Long bankId);
     List<AccountResponse> getLinkedUserAccounts(UUID userId);
     List<AccountResponse> createAccounts(AccountRequest request);
-    List<AccountResponse> getUnlinkedUserAccounts(UUID userId);
+    List<AccountResponse> getUnlinkedUserAccounts(UUID userId, Long bankId);
 }
