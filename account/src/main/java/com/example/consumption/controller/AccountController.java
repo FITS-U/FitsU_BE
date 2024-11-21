@@ -1,6 +1,7 @@
 package com.example.consumption.controller;
 
 import com.example.consumption.domain.UserAccount;
+import com.example.consumption.request.AccountRequest;
 import com.example.consumption.response.AccountResponse;
 import com.example.consumption.response.BankResponse;
 import com.example.consumption.service.AccountService;
@@ -34,8 +35,9 @@ public class AccountController {
     }
 
     @PostMapping("/accounts")
-    public List<AccountResponse> createAccounts(@RequestBody List<UserAccount> userAccounts) {
-        return accountService.createAccounts(userAccounts);
+    public List<AccountResponse> createAccounts(@RequestBody AccountRequest accountRequest) {
+        List<AccountResponse> accounts = accountService.createAccounts(accountRequest);
+        return accounts;
     }
 
     @GetMapping("/accounts/linked/users/{userId}")

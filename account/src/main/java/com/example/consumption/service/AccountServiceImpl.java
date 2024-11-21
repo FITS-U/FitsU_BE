@@ -4,17 +4,16 @@ import com.example.consumption.domain.Bank;
 import com.example.consumption.domain.UserAccount;
 import com.example.consumption.repository.AccountRepository;
 import com.example.consumption.repository.BankRepository;
+import com.example.consumption.request.AccountRequest;
 import com.example.consumption.response.AccountResponse;
 import com.example.consumption.response.BankResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -43,32 +42,36 @@ public class AccountServiceImpl implements AccountService {
         return bank.map(BankResponse::from);
     }
 
+
     @Override
-    public List<AccountResponse> createAccounts(List<UserAccount> userAccounts) {
-        List<AccountResponse> account = new ArrayList<>();
+    public List<AccountResponse> createAccounts(AccountRequest request) {
+        List<AccountResponse> accountResponses = new ArrayList<>();
 
-        for(UserAccount userAccount : userAccounts) {
-            if(Boolean.TRUE.equals(userAccount.getIsLinked())) {
-                continue;
-            }
-            UserAccount newAccount = new UserAccount(
-                    userAccount.getAccountId(),
-                    userAccount.getAccountNum(),
-                    userAccount.getAccName(),
-                    userAccount.getBalance(),
-                    userAccount.getUserId(),
-                    true,
-                    userAccount.getBank()
-            );
-            UserAccount saveAccount = accountRepository.save(newAccount);
+        for (Long bankId : request.getBankIds()){
 
-            if(saveAccount != null) {
-                accountRepository.save(saveAccount);
-                accountRepository.deleteByIsLinkedFalseOrIsLinkedNull();
-                account.add(AccountResponse.from(saveAccount));
+            List<UserAccount> accounts = accountRepository.findByUserIdAndBankId(request.getUserId(), bankId);
+
+            for (UserAccount account : accounts) {
+                if (Boolean.TRUE.equals(account.getIsLinked())) {
+                    continue;
+                }
+
+                UserAccount newAcc = new UserAccount(
+                        account.getAccountId(),
+                        account.getAccountNum(),
+                        account.getAccName(),
+                        account.getBalance(),
+                        account.getUserId(),
+                        true,
+                        account.getBank()
+                );
+                accountRepository.delete(account);
+                UserAccount saveAccount = accountRepository.save(newAcc);
+                accountResponses.add(AccountResponse.from(saveAccount));
             }
+
         }
-        return account;
+        return accountResponses;
     }
 
     @Override
@@ -76,4 +79,6 @@ public class AccountServiceImpl implements AccountService {
         List<UserAccount> userAccounts = accountRepository.findUserAccountByUserId(userId);
         return userAccounts.stream().map(AccountResponse::from).toList();
     }
+
+
 }
