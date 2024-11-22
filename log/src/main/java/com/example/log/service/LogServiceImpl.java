@@ -10,8 +10,9 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class LogServiceImpl {
+public class LogServiceImpl implements LogService {
     private final LogRepository logRepository;
+
 
     public void saveLogs(LogRequest request) {
         Log log = Log.builder()
