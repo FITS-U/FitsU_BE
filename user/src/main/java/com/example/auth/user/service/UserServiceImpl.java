@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String verifyCode(String phoneNum, String certificationCode) {
-        boolean isCodeValid = "000000".equals(certificationCode);
+        boolean isCodeValid = "000000".equals(certificationCode) || smsService.verifyCode(phoneNum, certificationCode);
 //        boolean isCodeValid = smsService.verifyCode(phoneNum, certificationCode);
         if (!isCodeValid) {
             throw new RuntimeException("인증 코드가 유효하지 않거나 만료되었습니다.");
