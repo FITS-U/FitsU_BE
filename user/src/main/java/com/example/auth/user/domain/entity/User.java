@@ -26,8 +26,16 @@ public class User {
     private String phoneNum;
 
     @Column(nullable = false)
-    private boolean isMarried;
+    private String nickName;
 
-    @Column(nullable = false)
-    private boolean hasChild;
+    public static User createUserWithPhoneNum(String phoneNum) {
+        User user = new User();
+        user.phoneNum = phoneNum;
+        return user;
+    }
+
+    public User withPhoneNumber(String phoneNum){
+        this.phoneNum = phoneNum;
+        return this;
+    }
 }
