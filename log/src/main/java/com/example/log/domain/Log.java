@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,7 +22,8 @@ public class Log {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long logId;
     private UUID userId;
-    private LocalDateTime clickTime;
+    @CreatedDate @Builder.Default
+    private LocalDateTime createdAt=LocalDateTime.now();
     private Long mainCtgId;
     private String eventType;
 }

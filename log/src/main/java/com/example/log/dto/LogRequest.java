@@ -7,6 +7,6 @@ import java.util.UUID;
 @Getter
 public class LogRequest {
     private UUID userId;
-    private LocalDateTime clickTime;
     private Long mainCtgId;
+    private String eventType;
 }

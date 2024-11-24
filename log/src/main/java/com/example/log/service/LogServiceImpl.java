@@ -17,8 +17,8 @@ public class LogServiceImpl implements LogService {
     public void saveLogs(LogRequest request) {
         Log log = Log.builder()
                 .userId(request.getUserId())
-                .clickTime(request.getClickTime())
                 .mainCtgId(request.getMainCtgId())
+                .eventType(request.getEventType())
                 .build();
         logRepository.save(log);
     }

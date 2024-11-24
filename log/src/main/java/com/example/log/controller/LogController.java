@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogController {
     private final LogService logService;
 
-    @PostMapping("/click")
+    @PostMapping
     public void saveClickLogs(@RequestBody LogRequest request) {
         logService.saveLogs(request);
     }
