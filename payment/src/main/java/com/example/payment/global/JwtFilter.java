@@ -30,13 +30,15 @@ public class JwtFilter extends OncePerRequestFilter {
         if(authorization != null && authorization.startsWith("Bearer ")){
             String token = authorization.substring(7);
             try{
-                String username = jwtUtils.parseToken(token);
-                UserDetails userDetails = userService.loadUserByUsername(authorization);
+                String userId = jwtUtils.parseToken(token);
+                UserDetails userDetails = userService.loadUserByUsername(userId);
                 Authentication authentication =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }catch (Exception e){}
+            }catch (Exception e){
+                logger.error("토큰 인증 실패: ", e);
+            }
         }
 
         filterChain.doFilter(request, response);

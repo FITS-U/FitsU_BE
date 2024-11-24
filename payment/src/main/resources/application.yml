@@ -11,5 +11,5 @@ server:
   port: 8084
 
 jwt:
-  secret: asdfaerrwesdfserw2asdfaerrwesdfserw2321
-  expiration: 86400000
+  secret: rlaguswjdtlstkskdnslRKdkswdkdlTdj
+  expiration: 31536000000

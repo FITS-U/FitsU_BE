@@ -23,10 +23,10 @@ public class JwtUtils {
     }
 
     //   generate-token
-    public String generateToken(String username){
+    public String generateToken(String userId){
         Date expirationDate = new Date(System.currentTimeMillis() + expiration);
         return Jwts.builder()
-                .subject(username)
+                .subject(userId)
                 .expiration(expirationDate)
                 .signWith(key)
                 .compact();
