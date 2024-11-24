@@ -9,7 +9,7 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 server:
-  port: 8081
+  port: 8087
 jwt:
   secret: rlaguswjdtlstkskdnslRKdkswdkdlTdj
   expiration: 2592000

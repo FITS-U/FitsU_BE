@@ -1,12 +1,15 @@
 package com.example.consumption.controller;
 
 import com.example.consumption.domain.UserAccount;
+import com.example.consumption.global.JwtUtils;
 import com.example.consumption.request.AccountRequest;
 import com.example.consumption.response.AccountResponse;
 import com.example.consumption.response.BankResponse;
 import com.example.consumption.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +25,19 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
+    private final JwtUtils jwtUtils;
 
     @GetMapping("/accounts/users/{userId}")
-    public List<AccountResponse> getUserAccount(@PathVariable String userId) throws AccessDeniedException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserId = authentication.getName();
+    public List<AccountResponse> getUserAccount(@PathVariable String userId, @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
 
-        if(!currentUserId.equals(userId)) {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
+        }
+
+        String token = authorization.substring(7);
+        String currentUserId = jwtUtils.parseToken(token);
+
+        if(!UUID.fromString(currentUserId).equals(UUID.fromString(userId))) {
             throw new AccessDeniedException("본인의 계좌만 조회할 수 있습니다.");
         }
 
@@ -46,18 +55,46 @@ public class AccountController {
     }
 
     @PostMapping("/accounts")
-    public List<AccountResponse> createAccounts(@RequestBody AccountRequest accountRequest) {
+    public List<AccountResponse> createAccounts(@RequestBody AccountRequest accountRequest, @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
+        }
+
+        String token = authorization.substring(7);
+        String currentUserId = jwtUtils.parseToken(token);
+
+        if(!accountRequest.getUserId().equals(UUID.fromString(currentUserId))) {
+            throw new AccessDeniedException("계좌를 생성할 수 없습니다.");
+        }
         List<AccountResponse> accounts = accountService.createAccounts(accountRequest);
         return accounts;
     }
 
     @GetMapping("/accounts/linked/users/{userId}")
-    public List<AccountResponse> getLinkedUserAccounts(@PathVariable String userId) {
+    public List<AccountResponse> getLinkedUserAccounts(@PathVariable String userId,  @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
+        }
+        String token = authorization.substring(7);
+        String currentUserId = jwtUtils.parseToken(token);
+
+        if (!UUID.fromString(currentUserId).equals(UUID.fromString(userId))) {
+            throw new AccessDeniedException("본인의 계좌만 조회할 수 있습니다.");
+        }
         return accountService.getLinkedUserAccounts(UUID.fromString(userId));
     }
 
     @GetMapping("/accounts/unlinked/users/{userId}")
-    public List<AccountResponse> getUnlinkedUserAccounts(@PathVariable String userId, @RequestParam Long bankId) {
+    public List<AccountResponse> getUnlinkedUserAccounts(@PathVariable String userId, @RequestParam Long bankId, @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
+        }
+        String token = authorization.substring(7);
+        String currentUserId = jwtUtils.parseToken(token);
+
+        if (!UUID.fromString(currentUserId).equals(UUID.fromString(userId))) {
+            throw new AccessDeniedException("본인의 계좌만 조회할 수 있습니다.");
+        }
         return accountService.getUnlinkedUserAccounts(UUID.fromString(userId), bankId);
     }
 

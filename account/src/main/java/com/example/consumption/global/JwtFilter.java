@@ -1,7 +1,6 @@
 package com.example.consumption.global;
 
-
-
+import com.example.consumption.global.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,8 +19,10 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
+
     private final JwtUtils jwtUtils;
     private final UserDetailsService userService;
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -37,7 +38,9 @@ public class JwtFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }catch (Exception e){}
+            }catch (Exception e){
+                logger.error("토큰 인증 실패: ", e);
+            }
         }
 
         filterChain.doFilter(request, response);
