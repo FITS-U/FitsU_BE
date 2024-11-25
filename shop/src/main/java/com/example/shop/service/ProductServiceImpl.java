@@ -86,6 +86,7 @@ public class ProductServiceImpl implements ProductService {
                 .createdAt(product.getCreatedAt())
                 .updatedAt(LocalDateTime.now())
                 .status(request.getStatus())
+                .mainCtgId(request.getMainCtgId())
                 .build();
         productRepository.save(updatedProduct);
         return ProductResponse.from(updatedProduct);
