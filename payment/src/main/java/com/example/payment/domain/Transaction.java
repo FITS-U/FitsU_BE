@@ -26,6 +26,7 @@ public class Transaction {
     private Double price;
     private LocalDateTime createdAt;
     private Long mainCtgId;
+    private String mainCtgName;
     private Long accountId;
     private Long userCardId;
 }
