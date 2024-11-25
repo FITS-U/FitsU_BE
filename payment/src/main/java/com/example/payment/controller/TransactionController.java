@@ -23,7 +23,7 @@ public class TransactionController {
     private final JwtUtils jwtUtils;
 
     // 입출금 내역 목록
-    @GetMapping("/")
+    @GetMapping
     public List<TransactionResponse> getAllPayments(@RequestHeader("Authorization") String authorization) throws AccessDeniedException {
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
