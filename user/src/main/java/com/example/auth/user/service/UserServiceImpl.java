@@ -30,9 +30,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String login(LoginRequest loginRequest, String certificationCode) {
+    public String login(LoginRequest loginRequest, String token) {
+        String phoneNum = jwtUtils.parseToken(token);
 
-        boolean isCodeValid = smsService.verifyCode(loginRequest.phoneNum(),certificationCode);
+        boolean isCodeValid = smsService.verifyCode(phoneNum, loginRequest.certificationCode());
         if(!isCodeValid){
             throw new RuntimeException("인증 코드가 유효하지 않거나 만료되었습니다.");
         }
@@ -42,7 +43,7 @@ public class UserServiceImpl implements UserService{
         }
 
         User user = loginUser.get();
-        if(!Objects.equals(loginRequest.phoneNum(), user.getPhoneNum())) {
+        if(!phoneNum.equals(user.getPhoneNum())) {
             throw new RuntimeException("핸드폰번호가 일치하지 않습니다");
         }
 

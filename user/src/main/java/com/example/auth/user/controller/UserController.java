@@ -25,9 +25,9 @@ public class UserController {
    }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request, @RequestParam String certificationCode) {
-        String token = userService.login(request, certificationCode);
-        return ResponseEntity.ok(token);
+    public ResponseEntity<String> login(@RequestBody LoginRequest request, @RequestHeader("Authorization") String token) {
+        String jwtToken = userService.login(request, token);
+        return ResponseEntity.ok(jwtToken);
     }
 
     @PostMapping("/register")
