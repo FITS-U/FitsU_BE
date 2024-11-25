@@ -40,4 +40,7 @@ public class Product {
 
     @Column(nullable = false)
     private Date updatedAt;
+
+    @Column(nullable = false)
+    private Long mainCtgId;
 }
