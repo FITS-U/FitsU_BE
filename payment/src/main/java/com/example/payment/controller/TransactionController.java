@@ -23,9 +23,8 @@ public class TransactionController {
     private final JwtUtils jwtUtils;
 
     // 입출금 내역 목록
-    @GetMapping("users/{userId}")
-    public List<TransactionResponse> getAllPayments(@PathVariable String userId,
-                                                    @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
+    @GetMapping("/")
+    public List<TransactionResponse> getAllPayments(@RequestHeader("Authorization") String authorization) throws AccessDeniedException {
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
         }
@@ -33,17 +32,20 @@ public class TransactionController {
         String token = authorization.substring(7);
         String currentUserId = jwtUtils.parseToken(token);
 
-        if(!UUID.fromString(currentUserId).equals(UUID.fromString(userId))) {
-            throw new AccessDeniedException("본인의 계좌만 조회할 수 있습니다.");
-        }
-
-        return transactionService.getAllPayments(UUID.fromString(userId));
+        return transactionService.getAllPayments(UUID.fromString(currentUserId));
     }
 
     //각 입출금 내역 별 상세
-    @GetMapping("/details/{transactionId}/users/{userId}")
-    public List<TransactionResponse> getPaymentByTransactionId(@PathVariable String userId, @PathVariable Long transactionId) {
-        return transactionService.getPaymentsDetails(UUID.fromString(userId), transactionId);
+    @GetMapping("/details/{transactionId}")
+    public List<TransactionResponse> getPaymentByTransactionId(@PathVariable Long transactionId, @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
+        }
+
+        String token = authorization.substring(7);
+        String currentUserId = jwtUtils.parseToken(token);
+
+        return transactionService.getPaymentsDetails(UUID.fromString(currentUserId), transactionId);
     }
 
     // 월 기준 총 지출
