@@ -49,16 +49,22 @@ public class TransactionController {
     }
 
     // 월 기준 총 지출
-    @GetMapping("/mth-spend/users/{userId}")
-    public Double getMonthSpend(@PathVariable String userId, @RequestParam int year, @RequestParam int month) {
-        Double monthlySpending = transactionService.getMonthlySpending(UUID.fromString(userId), year, month);
+    @GetMapping("/mth-spend")
+    public Double getMonthSpend(@RequestHeader("Authorization") String authorization ,@RequestParam int year, @RequestParam int month) throws AccessDeniedException {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
+        }
+
+        String token = authorization.substring(7);
+        String currentUserId = jwtUtils.parseToken(token);
+
+        Double monthlySpending = transactionService.getMonthlySpending(UUID.fromString(currentUserId), year, month);
         return monthlySpending;
     }
 
     // 한 계좌의 소비 내역
-    @GetMapping("/users/{userId}/accounts/{accountId}")
-    public ResponseEntity<Page<TransactionResponse>> getPaymentByAccountId(@PathVariable String userId,
-                                                                           @PathVariable Long accountId,
+    @GetMapping("/accounts/{accountId}")
+    public ResponseEntity<Page<TransactionResponse>> getPaymentByAccountId(@PathVariable Long accountId,
                                                                            Pageable pageable,
                                                                            @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
 
@@ -69,18 +75,14 @@ public class TransactionController {
         String token = authorization.substring(7);
         String currentUserId = jwtUtils.parseToken(token);
 
-        if(!UUID.fromString(currentUserId).equals(UUID.fromString(userId))) {
-            throw new AccessDeniedException("본인의 계좌만 조회할 수 있습니다.");
-        }
 
-        Page<TransactionResponse> response = transactionService.getByAccountId(UUID.fromString(userId), accountId);
+        Page<TransactionResponse> response = transactionService.getByAccountId(UUID.fromString(currentUserId), accountId);
         return ResponseEntity.ok().body(response);
     }
 
     // 한 카테고리의 결제 내역 목록
-    @GetMapping("/users/{userId}/category/{mainCtgId}")
-    public List<TransactionResponse> getPaymentsByCategory(@PathVariable String userId,
-                                                           @PathVariable Long mainCtgId,
+    @GetMapping("/category/{mainCtgId}")
+    public List<TransactionResponse> getPaymentsByCategory(@PathVariable Long mainCtgId,
                                                            @RequestHeader String authorization) throws AccessDeniedException {
 
         if (authorization == null || !authorization.startsWith("Bearer ")) {
@@ -90,16 +92,12 @@ public class TransactionController {
         String token = authorization.substring(7);
         String currentUserId = jwtUtils.parseToken(token);
 
-        if(!UUID.fromString(currentUserId).equals(UUID.fromString(userId))) {
-            throw new AccessDeniedException("본인의 계좌만 조회할 수 있습니다.");
-        }
-        return transactionService.getCategoryPaymentDetails(UUID.fromString(userId), mainCtgId);
+        return transactionService.getCategoryPaymentDetails(UUID.fromString(currentUserId), mainCtgId);
     }
 
     // 카테고리별 월 기준 총 지출
-    @GetMapping("/mth-expenses-by-category/users/{userId}")
-    public List<MonthlySpendDto> getMonthlySpending(@PathVariable String userId,
-                                                    @RequestParam int year,
+    @GetMapping("/mth-expenses-by-category")
+    public List<MonthlySpendDto> getMonthlySpending(@RequestParam int year,
                                                     @RequestParam int month,
                                                     @RequestHeader String authorization) throws AccessDeniedException {
 
@@ -110,11 +108,7 @@ public class TransactionController {
         String token = authorization.substring(7);
         String currentUserId = jwtUtils.parseToken(token);
 
-        if(!UUID.fromString(currentUserId).equals(UUID.fromString(userId))) {
-            throw new AccessDeniedException("본인의 계좌만 조회할 수 있습니다.");
-        }
-
-        List<MonthlySpendDto> monthlySpending = transactionService.getMonthlySpendingByCategoryId(UUID.fromString(userId), year, month);
+        List<MonthlySpendDto> monthlySpending = transactionService.getMonthlySpendingByCategoryId(UUID.fromString(currentUserId), year, month);
         return monthlySpending;
     }
 }
