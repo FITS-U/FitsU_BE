@@ -11,9 +11,10 @@ public record ProductRequest(
         String title,
         String content,
         Double price,
-        ProductStatus status
+        ProductStatus status,
+        Long mainCtgId
 ) {
-    public Product toEntity(UUID userId) {
+    public Product toEntity() {
         return Product.builder()
                 .userId(userId)
                 .title(title)
@@ -22,6 +23,7 @@ public record ProductRequest(
                 .createdAt(new Date())
                 .updatedAt(new Date())
                 .status(this.status != null ? this.status : ProductStatus.AVAILABLE)
+                .mainCtgId(mainCtgId)
                 .build();
     }
 }

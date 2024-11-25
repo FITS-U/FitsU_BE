@@ -28,12 +28,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse getProduct(Long productId) {
         Product product = productRepository.findByProductId(productId);
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
         return ProductResponse.from(product);
     }
 
     @Override
-    public ProductResponse addProduct(UUID userId, ProductRequest request) {
-        Product product = request.toEntity(userId);
+    public ProductResponse addProduct(ProductRequest request) {
+        Product product = request.toEntity();
         Product savedProduct = productRepository.save(product);
         return ProductResponse.from(savedProduct);
     }
@@ -52,8 +55,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse updateProduct(UUID userId, Long productId, ProductRequest request) {
-        Product product = productRepository.findByProductIdAndUserId(productId, userId);
+    public ProductResponse updateProduct(Long productId, ProductRequest request) {
+        Product product = productRepository.findByProductId(productId);
         Product updatedProduct = Product.builder()
                 .productId(product.getProductId())
                 .userId(product.getUserId())
@@ -69,8 +72,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteProduct(UUID userId, Long productId) {
-        Product product = productRepository.findByProductIdAndUserId(productId, userId);
+    public void deleteProduct(Long productId) {
+        Product product = productRepository.findByProductId(productId);
         productRepository.delete(product);
     }
 }
