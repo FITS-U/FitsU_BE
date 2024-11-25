@@ -3,10 +3,12 @@ package com.example.shop.service;
 import com.example.shop.domain.dto.ProductRequest;
 import com.example.shop.domain.dto.ProductResponse;
 import com.example.shop.domain.entity.Product;
+import com.example.shop.domain.entity.ProductStatus;
 import com.example.shop.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -28,12 +30,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse getProduct(Long productId) {
         Product product = productRepository.findByProductId(productId);
+        if (product == null) {
+            throw new RuntimeException("Product not found");
+        }
         return ProductResponse.from(product);
     }
 
     @Override
-    public ProductResponse addProduct(UUID userId, ProductRequest request) {
-        Product product = request.toEntity(userId);
+    public ProductResponse addProduct(ProductRequest request, UUID userId) {
+        Product product = Product.builder()
+                .userId(userId)
+                .title(request.getTitle())
+                .content(request.getContent())
+                .price(request.getPrice())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .status(ProductStatus.AVAILABLE)
+                .mainCtgId(request.getMainCtgId())
+                .build();
+
         Product savedProduct = productRepository.save(product);
         return ProductResponse.from(savedProduct);
     }
@@ -52,25 +67,40 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse updateProduct(UUID userId, Long productId, ProductRequest request) {
-        Product product = productRepository.findByProductIdAndUserId(productId, userId);
+    public ProductResponse updateProduct(Long productId, ProductRequest request, UUID userId) {
+        Product product = productRepository.findByProductId(productId);
+
+        if (product == null) {
+            throw new RuntimeException("상품을 찾을 수 없습니다.");
+        }
+        if (!product.getUserId().equals(userId)) {
+            throw new RuntimeException("상품을 수정할 수 없습니다.");
+        }
+
         Product updatedProduct = Product.builder()
                 .productId(product.getProductId())
                 .userId(product.getUserId())
-                .title(request.title())
-                .content(request.content())
-                .price(request.price())
+                .title(request.getTitle())
+                .content(request.getContent())
+                .price(request.getPrice())
                 .createdAt(product.getCreatedAt())
-                .updatedAt(new Date())
-                .status(request.status())
+                .updatedAt(LocalDateTime.now())
+                .status(request.getStatus())
                 .build();
         productRepository.save(updatedProduct);
         return ProductResponse.from(updatedProduct);
     }
 
     @Override
-    public void deleteProduct(UUID userId, Long productId) {
-        Product product = productRepository.findByProductIdAndUserId(productId, userId);
+    public void deleteProduct(Long productId, UUID userId) {
+        Product product = productRepository.findByProductId(productId);
+        if (product == null) {
+            throw new RuntimeException("상품을 찾을 수 없습니다.");
+        }
+
+        if (!product.getUserId().equals(userId)) {
+            throw new RuntimeException("상품을 삭제할 수 없습니다.");
+        }
         productRepository.delete(product);
     }
 }

@@ -10,9 +10,9 @@ public interface ProductService {
 
     List<ProductResponse> getAllProducts();
     ProductResponse getProduct(Long productId);
-    ProductResponse addProduct(UUID userId, ProductRequest request);
+    ProductResponse addProduct(ProductRequest request, UUID userId);
     List<ProductResponse> getMySales(UUID userId);
     List<ProductResponse> getMyPurchases(UUID userId);
-    ProductResponse updateProduct(UUID userId, Long productId, ProductRequest request);
-    void deleteProduct(UUID userId, Long productId);
+    ProductResponse updateProduct(Long productId, ProductRequest request, UUID userId);
+    void deleteProduct(Long productId, UUID userId);
 }

@@ -3,6 +3,7 @@ package com.example.shop.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,10 +37,10 @@ public class Product {
     private ProductStatus status;
 
     @Column(nullable = false)
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(nullable = false)
     private Long mainCtgId;
