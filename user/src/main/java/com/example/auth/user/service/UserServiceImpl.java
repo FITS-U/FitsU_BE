@@ -33,10 +33,6 @@ public class UserServiceImpl implements UserService{
     public String login(LoginRequest loginRequest, String token) {
         String phoneNum = jwtUtils.parseToken(token);
 
-        boolean isCodeValid = smsService.verifyCode(phoneNum, loginRequest.certificationCode());
-        if(!isCodeValid){
-            throw new RuntimeException("인증 코드가 유효하지 않거나 만료되었습니다.");
-        }
         Optional<User> loginUser = userRepository.findByUserName(loginRequest.userName());
         if(loginUser.isEmpty()) {
             throw new RuntimeException("해당 이름을 가진 사용자가 없습니다");
