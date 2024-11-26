@@ -12,9 +12,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CardCategory {
+@Table(name = "BENEFIT")
+public class Benefit {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long linkId;
+    private Long benefitId;
+    private String benefitTitle;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "CARD_ID")

@@ -12,14 +12,12 @@ import java.util.List;
 @Repository
 public interface CardRepository extends JpaRepository<CardInfo, Long> {
 
-    @Query("SELECT new com.example.card.response.CardResponse(ci.cardId, ci.cardName, ci.bankId, ci.benSummary, " +
-            "cp.prevSales, cp.annualFee, bd.description, mc.mainCtgId, mc.mainCtgName, sc.subCtgId, sc.subCtgName) " +
+    @Query("SELECT new com.example.card.response.CardResponse(ci.cardId, ci.cardName, ci.bankId, " +
+            "cp.prevSales, cp.annualFee, b.benefitTitle, b.description, mc.mainCtgId, mc.mainCtgName) " +
             "FROM CardInfo ci " +
             "LEFT JOIN CardPerform cp ON ci.cardId = cp.cardInfo.cardId " +
-            "LEFT JOIN BenefitDesc bd ON ci.cardId = bd.cardInfo.cardId " +
-            "LEFT JOIN CardCategory cc ON ci.cardId = cc.cardInfo.cardId " +
-            "LEFT JOIN MainCategory mc ON cc.mainCategory.mainCtgId = mc.mainCtgId " +
-            "LEFT JOIN SubCategory sc ON mc.mainCtgId = sc.mainCategory.mainCtgId " +
+            "LEFT JOIN Benefit b ON ci.cardId = b.cardInfo.cardId " +
+            "RIGHT join MainCategory mc ON mc.mainCtgId = b.mainCategory.mainCtgId " +
             "WHERE ci.cardId = :cardId")
     List<CardResponse> findCardDetails(@Param("cardId") Long cardId);
 }
