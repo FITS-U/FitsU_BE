@@ -56,17 +56,8 @@ public class AccountServiceImpl implements AccountService {
                     continue;
                 }
 
-                UserAccount newAcc = new UserAccount(
-                        account.getAccountId(),
-                        account.getAccountNum(),
-                        account.getAccName(),
-                        account.getBalance(),
-                        account.getUserId(),
-                        true,
-                        account.getBank()
-                );
-                accountRepository.delete(account);
-                UserAccount saveAccount = accountRepository.save(newAcc);
+                account.setIsLinked(true);
+                UserAccount saveAccount = accountRepository.save(account);
                 accountResponses.add(AccountResponse.from(saveAccount));
             }
 
