@@ -28,5 +28,7 @@ public class Transaction {
     private Long mainCtgId;
     private String mainCtgName;
     private Long accountId;
+    private String accName;
     private Long userCardId;
+    private String cardName;
 }

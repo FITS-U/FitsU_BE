@@ -10,9 +10,13 @@ public record TransactionResponse(
         String recipient,
         LocalDateTime createdAt,
         Long accountId,
+        String accName,
         Long mainCtgId,
+        String mainCtgName,
         Long userCardId,
+        String cardName,
         String transactionType
+
 ) {
     public static TransactionResponse from(Transaction transaction) {
         return new TransactionResponse(
@@ -21,9 +25,13 @@ public record TransactionResponse(
                 transaction.getRecipient(),
                 transaction.getCreatedAt(),
                 transaction.getAccountId(),
+                transaction.getAccName(),
                 transaction.getMainCtgId(),
+                transaction.getMainCtgName(),
                 transaction.getUserCardId(),
+                transaction.getCardName(),
                 transaction.getTransactionType()
+
         );
     }
 }
