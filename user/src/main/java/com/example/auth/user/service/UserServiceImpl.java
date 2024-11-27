@@ -54,12 +54,6 @@ public class UserServiceImpl implements UserService{
         if (userRepository.findByPhoneNum(phoneNum).isPresent()) {
             throw new RuntimeException("이미 가입된 전화번호입니다");
         }
-        userRepository.findByUserName(request.userName())
-                .ifPresent(user -> {
-                    if(Objects.equals(phoneNum, user.getPhoneNum())) {
-                        throw new DuplicateRequestException("이미 가입된 사용자입니다.");
-                    }
-                });
 
         User loggedInUser = request.toEntity().withPhoneNumber(phoneNum);
         userRepository.save(loggedInUser);
