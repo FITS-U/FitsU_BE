@@ -10,5 +10,5 @@ import java.util.UUID;
 @Service
 public interface CategoryService {
     List<CategoryResponse> getCategoriesByUserId(UUID userId);
-    void saveCategories(UUID userId ,List<Long> mainCtgIds);
+    void saveCategories(UUID userId ,List<Long> categoryIds);
 }

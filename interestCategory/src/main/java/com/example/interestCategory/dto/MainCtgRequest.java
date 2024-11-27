@@ -9,6 +9,5 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 public class MainCtgRequest {
-    private UUID userId;
-    private List<Long> mainCtgIds;
+    private List<Long> categoryIds;
 }

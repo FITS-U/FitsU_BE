@@ -17,6 +17,6 @@ import java.util.UUID;
 public class CategoryOfInterest {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long interestCtgId;
-    private Long mainCtgId;
+    private Long categoryId;
     private UUID userId;
 }
