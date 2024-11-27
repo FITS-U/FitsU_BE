@@ -63,6 +63,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Double getMonthlySpending(UUID userId, int year, int month) {
+        if(month < 1 || month > 12) {
+            throw new IllegalArgumentException("월은 1에서 12 사이의 값이어야 합니다.");
+        }
         LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
         LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
         Double totalMonthlySpending = transactionRepository.findTotalMonthlySpending(userId, startDate, endDate);
