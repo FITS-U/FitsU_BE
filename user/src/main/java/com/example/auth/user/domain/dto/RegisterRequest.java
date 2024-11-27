@@ -6,7 +6,6 @@ import lombok.Getter;
 import java.util.UUID;
 
 public record RegisterRequest(
-        UUID userId,
         String userName,
         String RRNum,
         String phoneNum,
@@ -14,7 +13,6 @@ public record RegisterRequest(
 ) {
     public User toEntity() {
         return User.builder()
-                .userId(UUID.randomUUID())
                 .userName(userName)
                 .RRNum(RRNum)
                 .phoneNum(phoneNum)

@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void register(RegisterRequest request, String token) {
-        String phoneNum = jwtUtils.parseToken(token.substring(7));
+        String phoneNum = jwtUtils.parseToken(token);
         Optional<User> existingUserByPhoneNum = userRepository.findByPhoneNum(phoneNum);
         if(existingUserByPhoneNum.isPresent()) {
             throw new RuntimeException("이미 가입된 전화번호입니다");
