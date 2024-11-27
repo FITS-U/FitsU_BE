@@ -7,13 +7,11 @@ import java.util.UUID;
 
 @Builder
 public record CategoryResponse(
-        Long categoryId,
-        UUID userId
+        Long categoryId
 ) {
     public static CategoryResponse from (CategoryOfInterest categoryOfInterest) {
         return new CategoryResponse(
-                categoryOfInterest.getCategoryId(),
-                categoryOfInterest.getUserId()
+                categoryOfInterest.getCategoryId()
         );
     }
 }
