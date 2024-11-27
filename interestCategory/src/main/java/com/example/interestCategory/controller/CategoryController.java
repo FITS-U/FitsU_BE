@@ -4,6 +4,7 @@ import com.example.interestCategory.dto.CategoryResponse;
 import com.example.interestCategory.dto.MainCtgRequest;
 import com.example.interestCategory.global.CustomUserDetails;
 import com.example.interestCategory.global.JwtUtils;
+import com.example.interestCategory.service.AuthService;
 import com.example.interestCategory.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ origins = "http://localhost:3000"
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final AuthService authService;
     private final JwtUtils jwtUtils;
 
     @GetMapping
@@ -44,18 +46,13 @@ public class CategoryController {
     }
 
     @PostMapping
-    public void saveCategories(@RequestBody MainCtgRequest mainCtgRequest, @RequestHeader String authorization) throws AccessDeniedException {
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
-        }
+    public void saveCategories(@RequestBody MainCtgRequest mainCtgRequest, @RequestHeader("Authorization") String authorization) {
 
         String token = authorization.substring(7);
-
-
-        String currentUserId = jwtUtils.parseToken(token);
+        String userId = authService.validateUser(token);
 
         List<Long> categoryIds = mainCtgRequest.getCategoryIds();
-        categoryService.saveCategories(UUID.fromString(currentUserId), categoryIds);
+        categoryService.saveCategories(UUID.fromString(userId), categoryIds);
     }
 
 }

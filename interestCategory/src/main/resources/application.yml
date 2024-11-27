@@ -16,5 +16,8 @@ jwt:
   secret: rlaguswjdtlstkskdnslRKdkswdkdlTdj
   expiration: 2592000
 
+auth:
+  service:
+    url: http://localhost:8080/api/v1/auth
 
 

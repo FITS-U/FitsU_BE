@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -33,10 +34,10 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IllegalArgumentException("다섯 개의 카테고리를 선택해주세요");
         }
 
-        for (Long categoryId : categoryIds) {
-            CategoryOfInterest categoryOfInterest = new CategoryOfInterest(null, categoryId, userId);
-            categoryRepository.save(categoryOfInterest);
+        List<CategoryOfInterest> categoriesToSave = categoryIds.stream()
+                .map(categoryId -> new CategoryOfInterest(null, categoryId, userId))
+                .toList();
+
+        categoryRepository.saveAll(categoriesToSave);
         }
     }
-
-}
