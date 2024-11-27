@@ -44,10 +44,18 @@ public class CategoryController {
     }
 
     @PostMapping
-    public void saveCategories(@RequestBody MainCtgRequest mainCtgRequest, @AuthenticationPrincipal CustomUserDetails user) throws AccessDeniedException {
+    public void saveCategories(@RequestBody MainCtgRequest mainCtgRequest, @RequestHeader String authorization) throws AccessDeniedException {
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
+            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
+        }
+
+        String token = authorization.substring(7);
 
 
-        List<Long> mainCtgIds = mainCtgRequest.getCategoryIds();
-        categoryService.saveCategories(user, mainCtgIds);
+        String currentUserId = jwtUtils.parseToken(token);
+
+        List<Long> categoryIds = mainCtgRequest.getCategoryIds();
+        categoryService.saveCategories(UUID.fromString(currentUserId), categoryIds);
     }
+
 }

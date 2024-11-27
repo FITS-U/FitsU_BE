@@ -26,11 +26,11 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("유효하지 않은 사용자 ID 형식입니다.");
         }
 
-        List<CategoryOfInterest> transactions= categoryRepository.findByUserId(userId);
-        if (transactions.isEmpty()) {
+        List<CategoryOfInterest> users= categoryRepository.findByUserId(userId);
+        if (users.isEmpty()) {
             throw new UsernameNotFoundException("해당 ID의 사용자를 찾을 수 없습니다.");
         }
-        CategoryOfInterest userAccount = transactions.get(0);
-        return new CustomUserDetails(userAccount);
+        CategoryOfInterest category = users.get(0);
+        return new CustomUserDetails(category);
     }
 }

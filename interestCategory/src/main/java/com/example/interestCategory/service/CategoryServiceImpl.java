@@ -28,25 +28,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void saveCategories(CustomUserDetails user, List<Long> categoryIds) {
-        if(categoryIds.size() != 5) {
+    public void saveCategories(UUID userId, List<Long> categoryIds) {
+        if (categoryIds.size() != 5) {
             throw new IllegalArgumentException("다섯 개의 카테고리를 선택해주세요");
         }
-        for(Long categoryId : categoryIds) {
-            CategoryOfInterest categoryOfInterest = new CategoryOfInterest(null, categoryId, user.getCategoryOfInterest().getUserId());
+
+        for (Long categoryId : categoryIds) {
+            CategoryOfInterest categoryOfInterest = new CategoryOfInterest(null, categoryId, userId);
             categoryRepository.save(categoryOfInterest);
         }
     }
 
-//    @Override
-//    public void saveCategories(String phoneNum ,List<Long> categoryIds) {
-//        if(categoryIds.size() != 5) {
-//            throw new IllegalArgumentException("다섯 개의 카테고리를 선택해주세요");
-//        }
-//
-//        for(Long categoryId : categoryIds) {
-//            CategoryOfInterest categoryOfInterest = new CategoryOfInterest(null, categoryId, userId);
-//            categoryRepository.save(categoryOfInterest);
-//        }
-//    }
 }
