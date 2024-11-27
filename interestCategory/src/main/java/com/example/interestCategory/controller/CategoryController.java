@@ -29,13 +29,22 @@ public class CategoryController {
         String token = authorization.substring(7);
         String currentUserId = jwtUtils.parseToken(token);
 
-
         List<CategoryResponse> categories = categoryService.getCategoriesByUserId(UUID.fromString(currentUserId));
+
         return categories;
     }
 
+    @GetMapping
+    public List<CategoryResponse> getCategoriesForModel(){
+
+        String token = authorization.substring(7);
+        String currentUserId = jwtUtils.parseToken(token);
+
+        List<CategoryResponse> categories = categoryService.getCategoriesByUserId(UUID.randomUUID(currentUserId));
+    }
+
     @PostMapping
-    public ResponseEntity<String> saveCategories(@RequestBody MainCtgRequest mainCtgRequest, @RequestHeader String authorization) throws AccessDeniedException {
+    public void saveCategories(@RequestBody MainCtgRequest mainCtgRequest, @RequestHeader String authorization) throws AccessDeniedException {
 
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
@@ -46,6 +55,5 @@ public class CategoryController {
 
         List<Long> mainCtgIds = mainCtgRequest.getCategoryIds();
         categoryService.saveCategories(UUID.fromString(currentUserId), mainCtgIds);
-        return ResponseEntity.ok("카테고리가 저장되었습니다.");
     }
 }

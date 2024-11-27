@@ -26,6 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
         return list;
     }
 
+
+
     @Override
     public void saveCategories(UUID userId, List<Long> categoryIds) {
         if(categoryIds.size() != 5) {
