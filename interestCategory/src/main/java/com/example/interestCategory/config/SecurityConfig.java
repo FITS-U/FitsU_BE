@@ -22,18 +22,19 @@ public class SecurityConfig {
     securityFilterChain(HttpSecurity http) throws Exception {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
+//        http.cors(AbstractHttpConfigurer::disable);
         http.userDetailsService(userService);
         http.addFilterBefore(jwtFilter,
                 UsernamePasswordAuthenticationFilter.class);
-        http.authorizeHttpRequests(
-                request -> request
-                        .requestMatchers(
-                                "/api/v1/auth/**"
-                        )
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
-        );
+//        http.authorizeHttpRequests(
+//                request -> request
+//                        .requestMatchers(
+//                                "/api/v1/auth/**"
+//                        )
+//                        .permitAll()
+//                        .anyRequest()
+//                        .authenticated()
+//        );
         http.sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );

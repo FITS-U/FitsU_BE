@@ -17,3 +17,7 @@ jwt:
   expiration: 2592000
 
 
+logging:
+  level:
+    org: trace
+

@@ -3,6 +3,7 @@ package com.example.interestCategory.service;
 import com.example.interestCategory.domain.CategoryOfInterest;
 import com.example.interestCategory.dto.CategoryResponse;
 import com.example.interestCategory.dto.MainCtgRequest;
+import com.example.interestCategory.global.CustomUserDetails;
 import com.example.interestCategory.repository.CategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -26,17 +27,26 @@ public class CategoryServiceImpl implements CategoryService {
         return list;
     }
 
-
-
     @Override
-    public void saveCategories(UUID userId, List<Long> categoryIds) {
+    public void saveCategories(CustomUserDetails user, List<Long> categoryIds) {
         if(categoryIds.size() != 5) {
             throw new IllegalArgumentException("다섯 개의 카테고리를 선택해주세요");
         }
-
         for(Long categoryId : categoryIds) {
-            CategoryOfInterest categoryOfInterest = new CategoryOfInterest(null, categoryId, userId);
+            CategoryOfInterest categoryOfInterest = new CategoryOfInterest(null, categoryId, user.getCategoryOfInterest().getUserId());
             categoryRepository.save(categoryOfInterest);
         }
     }
+
+//    @Override
+//    public void saveCategories(String phoneNum ,List<Long> categoryIds) {
+//        if(categoryIds.size() != 5) {
+//            throw new IllegalArgumentException("다섯 개의 카테고리를 선택해주세요");
+//        }
+//
+//        for(Long categoryId : categoryIds) {
+//            CategoryOfInterest categoryOfInterest = new CategoryOfInterest(null, categoryId, userId);
+//            categoryRepository.save(categoryOfInterest);
+//        }
+//    }
 }

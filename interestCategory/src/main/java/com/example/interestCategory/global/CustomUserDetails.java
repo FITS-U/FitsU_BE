@@ -15,6 +15,10 @@ public class CustomUserDetails implements UserDetails {
         this.categoryOfInterest = categoryOfInterest;
     }
 
+    public CategoryOfInterest getCategoryOfInterest() {
+        return categoryOfInterest;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // 권한 정보를 반환합니다. (예시로 기본 ROLE_USER 설정)
