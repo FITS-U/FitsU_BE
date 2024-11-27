@@ -14,12 +14,12 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/cards")
 public class CardController {
 
     private final CardService cardService;
 
-    @GetMapping("/cards/{cardId}")
+    @GetMapping("/{cardId}")
     public List<CardResponse> getCardDetails(@PathVariable Long cardId) {
         return cardService.getCardDetails(cardId);
     }
