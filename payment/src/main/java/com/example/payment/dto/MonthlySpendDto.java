@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MonthlySpendDto{
-    private Long mainCtgId;
+    private Long categoryId;
+    private String categoryName;
     private double totalSpending;
 
     public static MonthlySpendDto from(Object[] result) {
         return new MonthlySpendDto(
                 ((Number) result[0]).longValue(),
-                ((Number) result[1]).doubleValue()
+                result[1].toString(),
+                ((Number) result[2]).doubleValue()
         );
     }
 }

@@ -11,8 +11,8 @@ public record TransactionResponse(
         LocalDateTime createdAt,
         Long accountId,
         String accName,
-        Long mainCtgId,
-        String mainCtgName,
+        Long categoryId,
+        String categoryName,
         Long userCardId,
         String cardName,
         String transactionType
@@ -26,8 +26,8 @@ public record TransactionResponse(
                 transaction.getCreatedAt(),
                 transaction.getAccountId(),
                 transaction.getAccName(),
-                transaction.getMainCtgId(),
-                transaction.getMainCtgName(),
+                transaction.getCategoryId(),
+                transaction.getCategoryName(),
                 transaction.getUserCardId(),
                 transaction.getCardName(),
                 transaction.getTransactionType()

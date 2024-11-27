@@ -14,7 +14,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findByUserId(UUID userId);
     List<Transaction> findByUserIdAndTransactionId(UUID userId, Long transactionId);
     Page<Transaction> findByUserIdAndAccountId(UUID userId , Long accountId, Pageable pageable);
-    List<Transaction> findByUserIdAndMainCtgId(UUID userId, Long mainCtgId);
+    List<Transaction> findByUserIdAndCategoryId(UUID userId, Long categoryId);
 
     @Query(value= "select sum(t.price) from Transaction t " +
             "where t.transactionType = 'expense' " +
@@ -22,10 +22,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "AND t.createdAt BETWEEN :startDate AND :endDate ")
     Double findTotalMonthlySpending(UUID userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query(value = "select t.mainCtgId, SUM(t.price) from Transaction t "  +
+    @Query(value = "select t.categoryId, t.categoryName, SUM(t.price) from Transaction t "  +
             "where t.transactionType = 'expense' " +
             "AND t.userId = :userId " +
             "AND t.createdAt BETWEEN :startDate AND :endDate " +
-            "GROUP BY t.mainCtgId")
+            "GROUP BY t.categoryId, t.categoryName ")
     List<Object[]> findMonthlySpendingByCreatedAt(UUID userId, LocalDateTime startDate, LocalDateTime endDate);
 }

@@ -81,8 +81,8 @@ public class TransactionController {
     }
 
     // 한 카테고리의 결제 내역 목록
-    @GetMapping("/category/{mainCtgId}")
-    public List<TransactionResponse> getPaymentsByCategory(@PathVariable Long mainCtgId,
+    @GetMapping("/category/{categoryId}")
+    public List<TransactionResponse> getPaymentsByCategory(@PathVariable Long categoryId,
                                                            @RequestHeader String authorization) throws AccessDeniedException {
 
         if (authorization == null || !authorization.startsWith("Bearer ")) {
@@ -92,7 +92,7 @@ public class TransactionController {
         String token = authorization.substring(7);
         String currentUserId = jwtUtils.parseToken(token);
 
-        return transactionService.getCategoryPaymentDetails(UUID.fromString(currentUserId), mainCtgId);
+        return transactionService.getCategoryPaymentDetails(UUID.fromString(currentUserId), categoryId);
     }
 
     // 카테고리별 월 기준 총 지출

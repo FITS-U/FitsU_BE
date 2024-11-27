@@ -45,8 +45,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long mainCtgId) {
-        List<Transaction> payments = transactionRepository.findByUserIdAndMainCtgId(userId, mainCtgId);
+    public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId) {
+        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
         List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
         return list;
     }
