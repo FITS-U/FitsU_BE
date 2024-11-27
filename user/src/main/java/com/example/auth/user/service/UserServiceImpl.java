@@ -5,6 +5,7 @@ import com.example.auth.user.domain.dto.LoginRequest;
 import com.example.auth.user.domain.dto.RegisterRequest;
 import com.example.auth.user.domain.entity.User;
 import com.example.auth.user.repository.UserRepository;
+import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,22 +48,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void register(RegisterRequest request, String token) {
+    public String register(RegisterRequest request, String token) {
         String phoneNum = jwtUtils.parseToken(token);
-        Optional<User> existingUserByPhoneNum = userRepository.findByPhoneNum(phoneNum);
-        if(existingUserByPhoneNum.isPresent()) {
+
+        if (userRepository.findByPhoneNum(phoneNum).isPresent()) {
             throw new RuntimeException("이미 가입된 전화번호입니다");
         }
+        userRepository.findByUserName(request.userName())
+                .ifPresent(user -> {
+                    if(Objects.equals(phoneNum, user.getPhoneNum())) {
+                        throw new DuplicateRequestException("이미 가입된 사용자입니다.");
+                    }
+                });
 
-        Optional<User> userName = userRepository.findByUserName(request.userName());
-
-        if (userName.isPresent()) {
-            User user = userName.get();
-            if (Objects.equals(request.phoneNum(), user.getPhoneNum()))
-                throw new RuntimeException("이미 가입된 사용자입니다");
-        }
         User loggedInUser = request.toEntity().withPhoneNumber(phoneNum);
-
         userRepository.save(loggedInUser);
+
+        return jwtUtils.generateToken(loggedInUser.getUserId().toString());
     }
 }

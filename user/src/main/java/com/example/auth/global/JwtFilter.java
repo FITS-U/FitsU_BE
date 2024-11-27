@@ -35,7 +35,9 @@ public class JwtFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }catch (Exception e){}
+            }catch (Exception e){
+                logger.error("토큰 인증 실패: ", e);
+            }
         }
 
         filterChain.doFilter(request, response);

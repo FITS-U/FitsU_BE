@@ -32,8 +32,8 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request, @RequestHeader("Authorization") String token) {
-        userService.register(request, token.substring(7));
-        return ResponseEntity.ok("회원가입이 완료되었습니다.");
+        String jwtToken = userService.register(request, token.substring(7));
+        return ResponseEntity.ok(jwtToken);
     }
 
 }
