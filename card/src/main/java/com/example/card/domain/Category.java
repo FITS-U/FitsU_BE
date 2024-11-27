@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "MAIN_CATEGORY")
-public class MainCategory {
+@Table(name = "CATEGORY")
+public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mainCtgId;
-    private String mainCtgName;
+    private Long categoryId;
+    private String categoryName;
 }

@@ -24,6 +24,6 @@ public class Benefit {
     private CardInfo cardInfo;
 
     @ManyToOne
-    @JoinColumn(name = "MAIN_CTG_ID")
-    private MainCategory mainCategory;
+    @JoinColumn(name = "CATEGORY_ID")
+    private Category category;
 }

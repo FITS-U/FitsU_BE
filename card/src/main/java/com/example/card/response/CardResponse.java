@@ -12,15 +12,15 @@ public record CardResponse(
         String annualFee,
         String benefitTitle,
         String description,
-        Long mainCtgId,
-        String mainCtgName
+        Long categoryId,
+        String categoryName
         ) {
 
     public static CardResponse from(
             CardInfo cardInfo,
             CardPerform cardPerform,
             Benefit benefit,
-            MainCategory mainCategory
+            Category category
             ) {
         return new CardResponse(
                 cardInfo.getCardId(),
@@ -30,8 +30,8 @@ public record CardResponse(
                 cardPerform.getAnnualFee(),
                 benefit.getBenefitTitle(),
                 benefit.getDescription(),
-                mainCategory.getMainCtgId(),
-                mainCategory.getMainCtgName()
+                category.getCategoryId(),
+                category.getCategoryName()
         );
 
 

@@ -1,6 +1,7 @@
 package com.example.card.repository;
 
 import com.example.card.domain.CardInfo;
+import com.example.card.domain.Category;
 import com.example.card.response.CardResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,11 +14,11 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<CardInfo, Long> {
 
     @Query("SELECT new com.example.card.response.CardResponse(ci.cardId, ci.cardName, ci.bankId, " +
-            "cp.prevSales, cp.annualFee, b.benefitTitle, b.description, mc.mainCtgId, mc.mainCtgName) " +
+            "cp.prevSales, cp.annualFee, b.benefitTitle, b.description, c.categoryId, c.categoryName) " +
             "FROM CardInfo ci " +
             "LEFT JOIN CardPerform cp ON ci.cardId = cp.cardInfo.cardId " +
             "LEFT JOIN Benefit b ON ci.cardId = b.cardInfo.cardId " +
-            "RIGHT join MainCategory mc ON mc.mainCtgId = b.mainCategory.mainCtgId " +
+            "RIGHT join Category c ON c.categoryId = b.category.categoryId " +
             "WHERE ci.cardId = :cardId")
     List<CardResponse> findCardDetails(@Param("cardId") Long cardId);
 }
