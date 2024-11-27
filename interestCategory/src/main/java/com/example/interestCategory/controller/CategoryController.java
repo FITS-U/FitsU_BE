@@ -50,6 +50,7 @@ public class CategoryController {
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
+        System.out.println("User ID: " + userId);
 
         List<Long> categoryIds = mainCtgRequest.getCategoryIds();
         categoryService.saveCategories(UUID.fromString(userId), categoryIds);
