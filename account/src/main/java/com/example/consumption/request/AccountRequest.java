@@ -12,5 +12,4 @@ import java.util.UUID;
 @Getter
 public class AccountRequest {
     private List<Long> bankIds;
-    private UUID userId;
 }
