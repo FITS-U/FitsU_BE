@@ -6,6 +6,7 @@ import com.example.consumption.request.AccountRequest;
 import com.example.consumption.response.AccountResponse;
 import com.example.consumption.response.BankResponse;
 import com.example.consumption.service.AccountService;
+import com.example.consumption.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
@@ -22,10 +23,12 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class AccountController {
 
     private final AccountService accountService;
     private final JwtUtils jwtUtils;
+    private final AuthService authService;
 
     @GetMapping("/accounts")
     public List<AccountResponse> getUserAccount(@RequestHeader("Authorization") String authorization) throws AccessDeniedException {
@@ -35,9 +38,9 @@ public class AccountController {
         }
 
         String token = authorization.substring(7);
-        String currentUserId = jwtUtils.parseToken(token);
+        String userId = authService.validateUser(token);
 
-        return accountService.getUserAccount(UUID.fromString(currentUserId));
+        return accountService.getUserAccount(UUID.fromString(userId));
     }
 
     @GetMapping("/banks")
@@ -57,9 +60,9 @@ public class AccountController {
         }
 
         String token = authorization.substring(7);
-        String currentUserId = jwtUtils.parseToken(token);
+        String userId = authService.validateUser(token);
 
-        if(!accountRequest.getUserId().equals(UUID.fromString(currentUserId))) {
+        if(!accountRequest.getUserId().equals(UUID.fromString(userId))) {
             throw new AccessDeniedException("계좌를 생성할 수 없습니다.");
         }
         List<AccountResponse> accounts = accountService.createAccounts(accountRequest);
@@ -72,20 +75,18 @@ public class AccountController {
             throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
         }
         String token = authorization.substring(7);
-        String currentUserId = jwtUtils.parseToken(token);
+        String userId = authService.validateUser(token);
 
-        return accountService.getLinkedUserAccounts(UUID.fromString(currentUserId));
+        return accountService.getLinkedUserAccounts(UUID.fromString(userId));
     }
 
     @GetMapping("/accounts/unlinked")
-    public List<AccountResponse> getUnlinkedUserAccounts(@RequestParam Long bankId, @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
-        }
-        String token = authorization.substring(7);
-        String currentUserId = jwtUtils.parseToken(token);
+    public List<AccountResponse> getUnlinkedUserAccounts(@RequestParam Long bankId, @RequestHeader("Authorization") String authorization)  {
 
-        return accountService.getUnlinkedUserAccounts(UUID.fromString(currentUserId), bankId);
+        String token = authorization.substring(7);
+        String userId = authService.validateUser(token);
+
+        return accountService.getUnlinkedUserAccounts(UUID.fromString(userId), bankId);
     }
 
 }
