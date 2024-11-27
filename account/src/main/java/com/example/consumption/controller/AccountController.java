@@ -27,15 +27,10 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
-    private final JwtUtils jwtUtils;
     private final AuthService authService;
 
     @GetMapping("/accounts")
-    public List<AccountResponse> getUserAccount(@RequestHeader("Authorization") String authorization) throws AccessDeniedException {
-
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
-        }
+    public List<AccountResponse> getUserAccount(@RequestHeader("Authorization") String authorization) {
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
@@ -55,25 +50,17 @@ public class AccountController {
 
     @PostMapping("/accounts")
     public List<AccountResponse> createAccounts(@RequestBody AccountRequest accountRequest, @RequestHeader("Authorization") String authorization) throws AccessDeniedException {
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
-        }
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
 
-        if(!accountRequest.getUserId().equals(UUID.fromString(userId))) {
-            throw new AccessDeniedException("계좌를 생성할 수 없습니다.");
-        }
-        List<AccountResponse> accounts = accountService.createAccounts(accountRequest);
+        List<AccountResponse> accounts = accountService.createAccounts(accountRequest, UUID.fromString(userId));
         return accounts;
     }
 
     @GetMapping("/accounts/linked")
-    public List<AccountResponse> getLinkedUserAccounts(@RequestHeader("Authorization") String authorization) throws AccessDeniedException {
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
-        }
+    public List<AccountResponse> getLinkedUserAccounts(@RequestHeader("Authorization") String authorization) {
+
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
 

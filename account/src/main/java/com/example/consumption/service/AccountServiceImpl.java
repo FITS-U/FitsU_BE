@@ -44,12 +44,12 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public List<AccountResponse> createAccounts(AccountRequest request) {
+    public List<AccountResponse> createAccounts(AccountRequest request, UUID userId) {
         List<AccountResponse> accountResponses = new ArrayList<>();
 
         for (Long bankId : request.getBankIds()){
 
-            List<UserAccount> accounts = accountRepository.findByUserIdAndBankId(request.getUserId(), bankId);
+            List<UserAccount> accounts = accountRepository.findByUserIdAndBankId(userId, bankId);
 
             for (UserAccount account : accounts) {
                 if (Boolean.TRUE.equals(account.getIsLinked())) {

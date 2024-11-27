@@ -10,6 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**") // 모든 경로에 대해 CORS 허용
                 .allowedOrigins("http://localhost:3000")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
                 .allowCredentials(true); // 자격 증명 허용
     }
 }
