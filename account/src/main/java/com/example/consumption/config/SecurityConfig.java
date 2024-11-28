@@ -4,6 +4,7 @@ import com.example.consumption.global.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,15 +23,17 @@ public class SecurityConfig {
     securityFilterChain(HttpSecurity http) throws Exception {
         http.formLogin(AbstractHttpConfigurer::disable);
         http.csrf(AbstractHttpConfigurer::disable);
+        http.cors(AbstractHttpConfigurer::disable);
         http.userDetailsService(userService);
         http.addFilterBefore(jwtFilter,
                 UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(
                 request -> request
                         .requestMatchers(
-                                "/api/v1/auth/**",
                                 "/api/v1/banks/**"
                         )
+                        .permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS)
                         .permitAll()
                         .anyRequest()
                         .authenticated()
