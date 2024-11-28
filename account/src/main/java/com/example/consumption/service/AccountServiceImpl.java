@@ -72,8 +72,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountResponse> getUnlinkedUserAccounts(UUID userId, Long bankId) {
-        List<UserAccount> userAccounts = accountRepository.findUnLinkedUserAccountByUserId(userId, bankId);
-        return userAccounts.stream().map(AccountResponse::from).toList();
+    public List<AccountResponse> getUnlinkedUserAccounts(UUID userId, List<Long> bankIds) {
+        List<UserAccount> unlinkedAccounts = accountRepository.findUnLinkedUserAccountByUserId(userId, bankIds);
+        return unlinkedAccounts.stream().map(AccountResponse::from).toList();
     }
 }

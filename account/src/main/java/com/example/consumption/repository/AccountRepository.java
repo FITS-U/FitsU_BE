@@ -24,8 +24,8 @@ public interface AccountRepository extends JpaRepository<UserAccount, Long> {
             "from UserAccount ua " +
             "where ua.isLinked = false " +
             "and ua.userId = :userId " +
-            "and ua.bank.bankId = :bankId")
-    List<UserAccount> findUnLinkedUserAccountByUserId(UUID userId, Long bankId);
+            "and ua.bank.bankId IN :bankIds")
+    List<UserAccount> findUnLinkedUserAccountByUserId(UUID userId, List<Long> bankIds);
 
     @Query(value = "select ua " +
             "from UserAccount ua " +
