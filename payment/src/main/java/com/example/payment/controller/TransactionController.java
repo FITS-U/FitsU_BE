@@ -18,7 +18,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/transactions")
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS})
 public class TransactionController {
     private final TransactionService transactionService;
     private final JwtUtils jwtUtils;
