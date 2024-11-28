@@ -35,4 +35,10 @@ public class CardServiceImpl implements CardService {
         List<CategoryResponse> list = allCategories.stream().map(CategoryResponse::from).toList();
         return list;
     }
+
+    @Override
+    public List<CardResponse> getAllCards() {
+        List<CardResponse> allCards = cardRepository.findAllCards();
+        return allCards;
+    }
 }

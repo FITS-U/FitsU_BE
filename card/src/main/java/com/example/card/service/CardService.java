@@ -13,4 +13,5 @@ public interface CardService {
     List<CardResponse> getCardDetails(Long cardId);
     List<CardResponse> getUserCardDetails(Long cardId);
     List<CategoryResponse> getAllCategories();
+    List<CardResponse> getAllCards();
 }
