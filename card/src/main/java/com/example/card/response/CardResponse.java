@@ -7,7 +7,6 @@ import lombok.Builder;
 public record CardResponse(
         Long cardId,
         String cardName,
-        Long bankId,
         String prevSales,
         String annualFee,
         String benefitTitle,
@@ -18,16 +17,14 @@ public record CardResponse(
 
     public static CardResponse from(
             CardInfo cardInfo,
-            CardPerform cardPerform,
             Benefit benefit,
             Category category
             ) {
         return new CardResponse(
                 cardInfo.getCardId(),
                 cardInfo.getCardName(),
-                cardInfo.getBankId(),
-                cardPerform.getPrevSales(),
-                cardPerform.getAnnualFee(),
+                cardInfo.getPrevSales(),
+                cardInfo.getAnnualFee(),
                 benefit.getBenefitTitle(),
                 benefit.getDescription(),
                 category.getCategoryId(),

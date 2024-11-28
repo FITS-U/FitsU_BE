@@ -10,5 +10,6 @@ public class CardInfo {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cardId;
     private String cardName;
-    private Long bankId;
+    private String prevSales;
+    private String annualFee;
 }

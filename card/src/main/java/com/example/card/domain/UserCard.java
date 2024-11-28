@@ -18,6 +18,7 @@ public class UserCard {
     private Long userCardId;
     private LocalDate expDate;
     private Long accountId;
+    private Long bankId;
 
     @OneToOne
     @JoinColumn(name = "CARD_ID")
