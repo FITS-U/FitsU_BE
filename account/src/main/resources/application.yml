@@ -8,10 +8,11 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
 server:
-  port: 8081
-
+  port: 8087
 jwt:
-  secret: asdfaerrwesdfserw2asdfaerrwesdfserw2321
-  expiration: 86400000
+  secret: rlaguswjdtlstkskdnslRKdkswdkdlTdj
+  expiration: 2592000
+auth:
+  service:
+    url: http://localhost:8080/api/v1/auth

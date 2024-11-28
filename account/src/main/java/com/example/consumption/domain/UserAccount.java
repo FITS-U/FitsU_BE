@@ -1,15 +1,13 @@
 package com.example.consumption.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -24,6 +22,6 @@ public class UserAccount {
     private Boolean isLinked;
 
     @ManyToOne
-    @JoinColumn(name = "BANK_ID")
+    @JoinColumn(name = "BANK_ID", nullable = false)
     private Bank bank;
 }
