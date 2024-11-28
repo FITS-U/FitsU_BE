@@ -28,12 +28,6 @@ public class User {
     @Column(nullable = false)
     private String nickName;
 
-    public static User createUserWithPhoneNum(String phoneNum) {
-        User user = new User();
-        user.phoneNum = phoneNum;
-        return user;
-    }
-
     public User withPhoneNumber(String phoneNum){
         this.phoneNum = phoneNum;
         return this;
