@@ -68,12 +68,12 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/unlinked")
-    public List<AccountResponse> getUnlinkedUserAccounts(@RequestParam Long bankId, @RequestHeader("Authorization") String authorization)  {
+    public List<AccountResponse> getUnlinkedUserAccounts(@RequestParam List<Long> bankIds, @RequestHeader("Authorization") String authorization)  {
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
 
-        return accountService.getUnlinkedUserAccounts(UUID.fromString(userId), bankId);
+        return accountService.getUnlinkedUserAccounts(UUID.fromString(userId), bankIds);
     }
 
 }
