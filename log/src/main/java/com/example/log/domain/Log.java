@@ -23,7 +23,7 @@ public class Log {
     private Long logId;
     private UUID userId;
     @CreatedDate @Builder.Default
-    private LocalDateTime createdAt=LocalDateTime.now();
-    private Long mainCtgId;
+    private LocalDateTime clickTime=LocalDateTime.now();
+    private Long categoryId;
     private String eventType;
 }

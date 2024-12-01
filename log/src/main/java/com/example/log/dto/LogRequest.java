@@ -6,7 +6,6 @@ import java.util.UUID;
 
 @Getter
 public class LogRequest {
-    private UUID userId;
-    private Long mainCtgId;
+    private Long categoryId;
     private String eventType;
 }
