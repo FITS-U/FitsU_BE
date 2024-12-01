@@ -32,15 +32,12 @@ public class CategoryController {
     private final JwtUtils jwtUtils;
 
     @GetMapping
-    public List<CategoryResponse> getCategoryByUserId(@RequestHeader String authorization) throws AccessDeniedException {
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            throw new AccessDeniedException("유효한 인증 토큰이 필요합니다.");
-        }
+    public List<CategoryResponse> getCategoryByUserId(@RequestHeader String authorization) {
 
         String token = authorization.substring(7);
-        String currentUserId = jwtUtils.parseToken(token);
+        String userId = authService.validateUser(token);
 
-        List<CategoryResponse> categories = categoryService.getCategoriesByUserId(UUID.fromString(currentUserId));
+        List<CategoryResponse> categories = categoryService.getCategoriesByUserId(UUID.fromString(userId));
 
         return categories;
     }
