@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/log")
+@RequestMapping("/api/v1/logs")
 @CrossOrigin(
         methods = {
                 RequestMethod.GET, RequestMethod.POST,
@@ -34,7 +34,6 @@ public class LogController {
 
     @GetMapping
     public List<LogResponse> getLogs(@RequestHeader("Authorization") String authorization) {
-//        String token = authorization.substring(7);
         String userId = authService.validateUser(authorization);
         return logService.getLogs(UUID.fromString(userId));
     }
