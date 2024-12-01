@@ -34,8 +34,8 @@ public class LogController {
 
     @GetMapping
     public List<LogResponse> getLogs(@RequestHeader("Authorization") String authorization) {
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
+//        String token = authorization.substring(7);
+        String userId = authService.validateUser(authorization);
         return logService.getLogs(UUID.fromString(userId));
     }
 }
