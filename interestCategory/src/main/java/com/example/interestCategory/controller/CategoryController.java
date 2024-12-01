@@ -34,8 +34,8 @@ public class CategoryController {
     @GetMapping
     public List<CategoryResponse> getCategoryByUserId(@RequestHeader String authorization) {
 
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
+//        String token = authorization.substring(7);
+        String userId = authService.validateUser(authorization);
 
         List<CategoryResponse> categories = categoryService.getCategoriesByUserId(UUID.fromString(userId));
 
