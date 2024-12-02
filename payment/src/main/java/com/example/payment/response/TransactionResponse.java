@@ -31,7 +31,6 @@ public record TransactionResponse(
                 transaction.getUserCardId(),
                 transaction.getCardName(),
                 transaction.getTransactionType()
-
         );
     }
 }

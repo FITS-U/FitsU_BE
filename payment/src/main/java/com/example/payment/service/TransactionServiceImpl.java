@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -74,5 +75,31 @@ public class TransactionServiceImpl implements TransactionService {
     public List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate) {
         return transactionRepository.findSumOfLast30Days(userId, startDate);
 
+    }
+
+    @Override
+    public TransactionResponse updateCategory(UUID userId, Transaction transaction, Long transactionId) {
+        Optional<Transaction> byId = transactionRepository.findById(transactionId);
+        if (byId.isPresent()) {
+            Transaction existingTransaction = byId.get();
+            Transaction updatingTransaction = Transaction.builder()
+                    .transactionId(existingTransaction.getTransactionId())
+                    .price(existingTransaction.getPrice())
+                    .recipient(existingTransaction.getRecipient())
+                    .createdAt(existingTransaction.getCreatedAt())
+                    .accountId(existingTransaction.getAccountId())
+                    .accName(existingTransaction.getAccName())
+                    .categoryId(transaction.getCategoryId())
+                    .categoryName(transaction.getCategoryName())
+                    .userCardId(existingTransaction.getUserCardId())
+                    .cardName(existingTransaction.getCardName())
+                    .transactionType(existingTransaction.getTransactionType())
+                    .userId(existingTransaction.getUserId())
+                    .build();
+            Transaction save = transactionRepository.save(updatingTransaction);
+            return TransactionResponse.from(save);
+        } else {
+            throw new RuntimeException("해당 결제 내역이 없습니다.");
+        }
     }
 }

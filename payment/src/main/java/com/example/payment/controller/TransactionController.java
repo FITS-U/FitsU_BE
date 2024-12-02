@@ -1,5 +1,6 @@
 package com.example.payment.controller;
 
+import com.example.payment.domain.Transaction;
 import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.global.JwtUtils;
 import com.example.payment.response.TransactionResponse;
@@ -102,5 +103,12 @@ public class TransactionController {
         String userId = authService.validateUser(token);
         LocalDateTime startDate = LocalDateTime.now().minusDays(30);
         return transactionService.getSumOfLast30Days(UUID.fromString(userId), startDate);
+    }
+
+    @PutMapping("/{transactionId}")
+    public TransactionResponse updateCategory(@RequestHeader String authorization, @RequestBody Transaction transaction, @PathVariable Long transactionId) {
+        String token = authorization.substring(7);
+        String userId = authService.validateUser(token);
+        return transactionService.updateCategory(UUID.fromString(userId), transaction, transactionId);
     }
 }
