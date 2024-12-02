@@ -15,8 +15,7 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
-    private Long orderId;
-    private String tossOrderId;
+    private String orderId;
     private String tossPaymentKey;
 
     @Enumerated(EnumType.STRING)
@@ -27,6 +26,7 @@ public class Payment {
     private Double totalAmount;
     private LocalDateTime approvedAt;
     private LocalDateTime requestedAt;
+    private String paymentDetails;
 
 
 }
