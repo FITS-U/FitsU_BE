@@ -1,9 +1,7 @@
 package com.example.consumption.repository;
 
 
-import com.example.consumption.domain.Bank;
 import com.example.consumption.domain.UserAccount;
-import com.example.consumption.response.AccountResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,6 +11,8 @@ import java.util.UUID;
 
 public interface AccountRepository extends JpaRepository<UserAccount, Long> {
     List<UserAccount> findByUserId(UUID userId);
+
+
     UserAccount save(UserAccount userAccount);
     @Query(value = "select ua " +
             "from UserAccount ua " +
