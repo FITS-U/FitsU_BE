@@ -13,9 +13,10 @@ import java.util.UUID;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByUserId(UUID userId);
+    List<Transaction> findByUserIdOrderByCreatedAtDesc(UUID userId);
     List<Transaction> findByUserIdAndTransactionId(UUID userId, Long transactionId);
-    Page<Transaction> findByUserIdAndAccountId(UUID userId , Long accountId, Pageable pageable);
-    List<Transaction> findByUserIdAndCategoryId(UUID userId, Long categoryId);
+    Page<Transaction> findByUserIdAndAccountIdOrderByCreatedAtDesc(UUID userId , Long accountId, Pageable pageable);
+    List<Transaction> findByUserIdAndCategoryIdOrderByCreatedAtDesc(UUID userId, Long categoryId);
 
     @Query(value= "select sum(t.price) from Transaction t " +
             "where t.transactionType = 'expense' " +

@@ -25,7 +25,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionResponse> getAllPayments(UUID userId) {
-        List<Transaction> payments = transactionRepository.findByUserId(userId);
+        List<Transaction> payments = transactionRepository.findByUserIdOrderByCreatedAtDesc(userId);
         List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
         return list;
     }
@@ -41,14 +41,16 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Page<TransactionResponse> getByAccountId(UUID userId, Long accountId) {
         Pageable pageable = PageRequest.of(0,10);
-        Page<Transaction> payments = transactionRepository.findByUserIdAndAccountId(userId, accountId, pageable);
+        Page<Transaction> payments = transactionRepository.findByUserIdAndAccountIdOrderByCreatedAtDesc(userId, accountId, pageable);
         return payments.map(TransactionResponse::from);
     }
 
     @Override
     public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId) {
-        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
-        List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
+        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryIdOrderByCreatedAtDesc(userId, categoryId);
+        List<TransactionResponse> list = payments.stream()
+                .map(TransactionResponse::from)
+                .toList();
         return list;
     }
 

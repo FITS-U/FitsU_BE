@@ -23,10 +23,9 @@ import java.util.UUID;
 @CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.OPTIONS})
 public class TransactionController {
     private final TransactionService transactionService;
-    private final JwtUtils jwtUtils;
     private final AuthService authService;
 
-    // 입출금 내역 목록
+    // 입출금 내역 목록 > 정렬
     @GetMapping
     public List<TransactionResponse> getAllPayments(@RequestHeader("Authorization") String authorization) {
 
@@ -57,7 +56,7 @@ public class TransactionController {
         return monthlySpending;
     }
 
-    // 한 계좌의 소비 내역
+    // 한 계좌의 소비 내역 > 정렬
     @GetMapping("/accounts/{accountId}")
     public ResponseEntity<Page<TransactionResponse>> getPaymentByAccountId(@PathVariable Long accountId,
                                                                            Pageable pageable,
@@ -71,7 +70,7 @@ public class TransactionController {
         return ResponseEntity.ok().body(response);
     }
 
-    // 한 카테고리의 결제 내역 목록
+    // 한 카테고리의 결제 내역 목록 > 정렬
     @GetMapping("/category/{categoryId}")
     public List<TransactionResponse> getPaymentsByCategory(@PathVariable Long categoryId,
                                                            @RequestHeader String authorization){
