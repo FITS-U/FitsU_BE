@@ -11,7 +11,7 @@ public record RegisterRequest(
         String phoneNum,
         String nickName
 ) {
-    public User toEntity() {
+    public User toEntity(String phoneNum) {
         return User.builder()
                 .userName(userName)
                 .RRNum(RRNum)

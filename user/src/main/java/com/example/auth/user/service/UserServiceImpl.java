@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("이미 가입된 전화번호입니다");
         }
 
-        User loggedInUser = request.toEntity().withPhoneNumber(phoneNum);
+        User loggedInUser = request.toEntity(phoneNum);
         userRepository.save(loggedInUser);
 
         return jwtUtils.generateToken(loggedInUser.getUserId().toString());

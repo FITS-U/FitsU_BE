@@ -28,8 +28,4 @@ public class User {
     @Column(nullable = false)
     private String nickName;
 
-    public User withPhoneNumber(String phoneNum){
-        this.phoneNum = phoneNum;
-        return this;
-    }
 }
