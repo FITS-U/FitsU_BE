@@ -11,4 +11,5 @@ public class PaymentApprovalRequest {
     private String tossPaymentKey;
     private String orderId;
     private Double amount;
+    private Long accountId;
 }

@@ -19,13 +19,14 @@ public class PaymentService {
     private final TossPayConfig tossPayConfig;
     private final RestTemplate restTemplate;
 
-    public void approvePayment(String tossPaymentKey, String orderId, Double totalAmount) {
+    public void approvePayment(String tossPaymentKey, String orderId, Double totalAmount, Long accountId) {
         String url = tossPayConfig.getApiUrl() + "/v1/payments/confirm";
 
         Map<String, Object> request = new HashMap<>();
         request.put("paymentKey", tossPaymentKey);
         request.put("tossOrderId", orderId);
         request.put("amount", totalAmount);
+        request.put("accountId", accountId);
 
         HttpHeaders headers = createHeaders(tossPayConfig.getTestSecretApiKey());
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
@@ -34,6 +35,26 @@ public class PaymentService {
 
         if (!response.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException("결제 승인 실패: " + response.getBody());
+        }
+
+    }
+
+    private void deductBalanceFromAccount(Long accountId, Double amount, String orderId) {
+        String accountServiceUrl = "http://localhost:8087/api/v1/accounts/deduct-balance";
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("accountId", accountId);
+        requestBody.put("amount", amount);
+        requestBody.put("orderId", orderId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(accountServiceUrl, entity, String.class);
+
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new RuntimeException("잔액 차감 실패: " + response.getBody());
         }
     }
 }

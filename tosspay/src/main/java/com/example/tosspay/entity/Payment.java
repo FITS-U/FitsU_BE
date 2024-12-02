@@ -27,6 +27,6 @@ public class Payment {
     private LocalDateTime approvedAt;
     private LocalDateTime requestedAt;
     private String paymentDetails;
-
+    private Long accountId;
 
 }
