@@ -1,6 +1,7 @@
 package com.example.payment.repository;
 
 import com.example.payment.domain.Transaction;
+import com.example.payment.dto.MonthlyExpenseDto;
 import com.example.payment.dto.MonthlySpendDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,5 +38,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "AND t.createdAt > :startDate " +
             "GROUP BY t.categoryId, t.categoryName")
     List<MonthlySpendDto> findSumOfLast30Days(UUID userId, LocalDateTime startDate);
+
+    @Query(value= " SELECT new com.example.payment.dto.MonthlyExpenseDto(year(t.createdAt), month(t.createdAt), sum(t.price)) from Transaction t " +
+            "where t.transactionType = 'expense' " +
+            "AND t.userId = :userId " +
+            "group by year(t.createdAt), month(t.createdAt) ")
+    List<MonthlyExpenseDto> findMonthlyExpenses(UUID userId);
 
 }

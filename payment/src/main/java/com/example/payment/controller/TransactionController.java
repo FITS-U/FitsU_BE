@@ -1,11 +1,13 @@
 package com.example.payment.controller;
 
 import com.example.payment.domain.Transaction;
+import com.example.payment.dto.MonthlyExpenseDto;
 import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.global.JwtUtils;
 import com.example.payment.response.TransactionResponse;
 import com.example.payment.service.AuthService;
 import com.example.payment.service.TransactionService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -109,5 +111,12 @@ public class TransactionController {
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
         return transactionService.updateCategory(UUID.fromString(userId), transaction, transactionId);
+    }
+
+    @GetMapping("/expenses/monthly")
+    public List<MonthlyExpenseDto> getMonthlyExpense(@RequestHeader String authorization){
+        String token = authorization.substring(7);
+        String userId = authService.validateUser(token);
+        return transactionService.getMonthlyExpense(UUID.fromString(userId));
     }
 }

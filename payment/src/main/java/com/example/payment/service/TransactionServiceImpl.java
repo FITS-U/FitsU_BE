@@ -1,6 +1,7 @@
 package com.example.payment.service;
 
 import com.example.payment.domain.Transaction;
+import com.example.payment.dto.MonthlyExpenseDto;
 import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.repository.TransactionRepository;
 import com.example.payment.response.TransactionResponse;
@@ -103,5 +104,10 @@ public class TransactionServiceImpl implements TransactionService {
         } else {
             throw new RuntimeException("해당 결제 내역이 없습니다.");
         }
+    }
+
+    @Override
+    public List<MonthlyExpenseDto> getMonthlyExpense(UUID userId) {
+        return transactionRepository.findMonthlyExpenses(userId);
     }
 }
