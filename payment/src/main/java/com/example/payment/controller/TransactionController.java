@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -93,5 +94,13 @@ public class TransactionController {
 
         List<MonthlySpendDto> monthlySpending = transactionService.getMonthlySpendingByCategoryId(UUID.fromString(userId), year, month);
         return monthlySpending;
+    }
+
+    @GetMapping("/expenses/last-30-days")
+    public List<MonthlySpendDto> getSumOfLast30Days(@RequestHeader String authorization){
+        String token = authorization.substring(7);
+        String userId = authService.validateUser(token);
+        LocalDateTime startDate = LocalDateTime.now().minusDays(30);
+        return transactionService.getSumOfLast30Days(UUID.fromString(userId), startDate);
     }
 }

@@ -17,4 +17,5 @@ public interface TransactionService {
     List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long mainCtgId);
     Double getMonthlySpending(UUID userId, int year, int month);
     List<MonthlySpendDto> getMonthlySpendingByCategoryId(UUID userId , int year , int month);
+    List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate);
 }

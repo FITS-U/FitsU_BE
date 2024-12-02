@@ -1,6 +1,7 @@
 package com.example.payment.repository;
 
 import com.example.payment.domain.Transaction;
+import com.example.payment.dto.MonthlySpendDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,10 +23,18 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "AND t.createdAt BETWEEN :startDate AND :endDate ")
     Double findTotalMonthlySpending(UUID userId, LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query(value = "select t.categoryId, t.categoryName, SUM(t.price) from Transaction t "  +
+    @Query(value = "SELECT new com.example.payment.dto.MonthlySpendDto(t.categoryId, t.categoryName, sum(t.price)) from Transaction t "  +
             "where t.transactionType = 'expense' " +
             "AND t.userId = :userId " +
             "AND t.createdAt BETWEEN :startDate AND :endDate " +
             "GROUP BY t.categoryId, t.categoryName ")
-    List<Object[]> findMonthlySpendingByCreatedAt(UUID userId, LocalDateTime startDate, LocalDateTime endDate);
+    List<MonthlySpendDto> findMonthlySpendingByCreatedAt(UUID userId, LocalDateTime startDate, LocalDateTime endDate);
+
+    @Query(value =" SELECT new com.example.payment.dto.MonthlySpendDto(t.categoryId, t.categoryName, sum(t.price)) from Transaction t " +
+            "where t.transactionType = 'expense' " +
+            "AND t.userId = :userId " +
+            "AND t.createdAt > :startDate " +
+            "GROUP BY t.categoryId, t.categoryName")
+    List<MonthlySpendDto> findSumOfLast30Days(UUID userId, LocalDateTime startDate);
+
 }

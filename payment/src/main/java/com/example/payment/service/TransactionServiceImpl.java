@@ -56,9 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
     public List<MonthlySpendDto> getMonthlySpendingByCategoryId(UUID userId, int year, int month) {
         LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
         LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
-        List<Object[]> spending = transactionRepository.findMonthlySpendingByCreatedAt(userId, startDate, endDate);
-        List<MonthlySpendDto> list = spending.stream().map(MonthlySpendDto::from).toList();
-        return list;
+        return transactionRepository.findMonthlySpendingByCreatedAt(userId, startDate, endDate);
     }
 
     @Override
@@ -70,5 +68,11 @@ public class TransactionServiceImpl implements TransactionService {
         LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
         Double totalMonthlySpending = transactionRepository.findTotalMonthlySpending(userId, startDate, endDate);
         return (totalMonthlySpending != null ? totalMonthlySpending : 0.0);
+    }
+
+    @Override
+    public List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate) {
+        return transactionRepository.findSumOfLast30Days(userId, startDate);
+
     }
 }
