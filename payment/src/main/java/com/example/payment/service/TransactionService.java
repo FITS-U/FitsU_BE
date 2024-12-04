@@ -1,5 +1,7 @@
 package com.example.payment.service;
 
+import com.example.payment.domain.Transaction;
+import com.example.payment.dto.MonthlyExpenseDto;
 import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.response.TransactionResponse;
 import org.springframework.data.domain.Page;
@@ -17,4 +19,7 @@ public interface TransactionService {
     List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long mainCtgId);
     Double getMonthlySpending(UUID userId, int year, int month);
     List<MonthlySpendDto> getMonthlySpendingByCategoryId(UUID userId , int year , int month);
+    List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate);
+    TransactionResponse updateCategory(UUID userId, Transaction transaction, Long transactionId);
+    List<MonthlyExpenseDto> getMonthlyExpense(UUID userId);
 }

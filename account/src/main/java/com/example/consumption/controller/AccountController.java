@@ -3,6 +3,7 @@ package com.example.consumption.controller;
 import com.example.consumption.domain.UserAccount;
 import com.example.consumption.global.JwtUtils;
 import com.example.consumption.request.AccountRequest;
+import com.example.consumption.request.BalanceRequest;
 import com.example.consumption.response.AccountResponse;
 import com.example.consumption.response.BankResponse;
 import com.example.consumption.service.AccountService;
@@ -76,6 +77,16 @@ public class AccountController {
         String userId = authService.validateUser(token);
 
         return accountService.getUnlinkedUserAccounts(UUID.fromString(userId), bankIds);
+    }
+
+    @PostMapping("/accounts/deduct-balance")
+    public ResponseEntity<String> deductBalance(@RequestHeader("Authorization") String authorization,
+                                                @RequestBody BalanceRequest request) {
+        String token = authorization.substring(7);
+        String userId = authService.validateUser(token);
+
+        accountService.deductBalance(UUID.fromString(userId), request);
+        return ResponseEntity.ok("잔액 차감");
     }
 
 }

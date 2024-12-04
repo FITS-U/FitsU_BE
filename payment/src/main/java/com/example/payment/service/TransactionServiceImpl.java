@@ -1,6 +1,7 @@
 package com.example.payment.service;
 
 import com.example.payment.domain.Transaction;
+import com.example.payment.dto.MonthlyExpenseDto;
 import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.repository.TransactionRepository;
 import com.example.payment.response.TransactionResponse;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,7 +26,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionResponse> getAllPayments(UUID userId) {
-        List<Transaction> payments = transactionRepository.findByUserId(userId);
+        List<Transaction> payments = transactionRepository.findByUserIdOrderByCreatedAtDesc(userId);
         List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
         return list;
     }
@@ -40,14 +42,16 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Page<TransactionResponse> getByAccountId(UUID userId, Long accountId) {
         Pageable pageable = PageRequest.of(0,10);
-        Page<Transaction> payments = transactionRepository.findByUserIdAndAccountId(userId, accountId, pageable);
+        Page<Transaction> payments = transactionRepository.findByUserIdAndAccountIdOrderByCreatedAtDesc(userId, accountId, pageable);
         return payments.map(TransactionResponse::from);
     }
 
     @Override
     public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId) {
-        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryId(userId, categoryId);
-        List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
+        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryIdOrderByCreatedAtDesc(userId, categoryId);
+        List<TransactionResponse> list = payments.stream()
+                .map(TransactionResponse::from)
+                .toList();
         return list;
     }
 
@@ -56,9 +60,7 @@ public class TransactionServiceImpl implements TransactionService {
     public List<MonthlySpendDto> getMonthlySpendingByCategoryId(UUID userId, int year, int month) {
         LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
         LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
-        List<Object[]> spending = transactionRepository.findMonthlySpendingByCreatedAt(userId, startDate, endDate);
-        List<MonthlySpendDto> list = spending.stream().map(MonthlySpendDto::from).toList();
-        return list;
+        return transactionRepository.findMonthlySpendingByCreatedAt(userId, startDate, endDate);
     }
 
     @Override
@@ -70,5 +72,42 @@ public class TransactionServiceImpl implements TransactionService {
         LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
         Double totalMonthlySpending = transactionRepository.findTotalMonthlySpending(userId, startDate, endDate);
         return (totalMonthlySpending != null ? totalMonthlySpending : 0.0);
+    }
+
+    @Override
+    public List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate) {
+        return transactionRepository.findSumOfLast30Days(userId, startDate);
+
+    }
+
+    @Override
+    public TransactionResponse updateCategory(UUID userId, Transaction transaction, Long transactionId) {
+        Optional<Transaction> byId = transactionRepository.findById(transactionId);
+        if (byId.isPresent()) {
+            Transaction existingTransaction = byId.get();
+            Transaction updatingTransaction = Transaction.builder()
+                    .transactionId(existingTransaction.getTransactionId())
+                    .price(existingTransaction.getPrice())
+                    .recipient(existingTransaction.getRecipient())
+                    .createdAt(existingTransaction.getCreatedAt())
+                    .accountId(existingTransaction.getAccountId())
+                    .accName(existingTransaction.getAccName())
+                    .categoryId(transaction.getCategoryId())
+                    .categoryName(transaction.getCategoryName())
+                    .userCardId(existingTransaction.getUserCardId())
+                    .cardName(existingTransaction.getCardName())
+                    .transactionType(existingTransaction.getTransactionType())
+                    .userId(existingTransaction.getUserId())
+                    .build();
+            Transaction save = transactionRepository.save(updatingTransaction);
+            return TransactionResponse.from(save);
+        } else {
+            throw new RuntimeException("해당 결제 내역이 없습니다.");
+        }
+    }
+
+    @Override
+    public List<MonthlyExpenseDto> getMonthlyExpense(UUID userId) {
+        return transactionRepository.findMonthlyExpenses(userId);
     }
 }

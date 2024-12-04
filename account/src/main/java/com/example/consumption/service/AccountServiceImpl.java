@@ -5,11 +5,13 @@ import com.example.consumption.domain.UserAccount;
 import com.example.consumption.repository.AccountRepository;
 import com.example.consumption.repository.BankRepository;
 import com.example.consumption.request.AccountRequest;
+import com.example.consumption.request.BalanceRequest;
 import com.example.consumption.response.AccountResponse;
 import com.example.consumption.response.BankResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -75,5 +77,17 @@ public class AccountServiceImpl implements AccountService {
     public List<AccountResponse> getUnlinkedUserAccounts(UUID userId, List<Long> bankIds) {
         List<UserAccount> unlinkedAccounts = accountRepository.findUnLinkedUserAccountByUserId(userId, bankIds);
         return unlinkedAccounts.stream().map(AccountResponse::from).toList();
+    }
+
+    @Override
+    public void deductBalance(UUID userId, BalanceRequest request) {
+        Optional<UserAccount> accountsOptional = accountRepository.findById(request.getAccountId());
+        UserAccount userAccount = accountsOptional.orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + request.getAccountId()));
+
+        if(userAccount.getBalance() < request.getAmount()) {
+            throw new IllegalArgumentException("Not enough balance");
+        }
+        userAccount.setBalance(userAccount.getBalance() - request.getAmount());
+        accountRepository.save(userAccount);
     }
 }
