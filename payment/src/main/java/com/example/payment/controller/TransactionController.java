@@ -11,11 +11,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -118,5 +120,64 @@ public class TransactionController {
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
         return transactionService.getMonthlyExpense(UUID.fromString(userId));
+    }
+
+    // /update?lastFetchedTime=2024-12-01T12:34:56Z
+    @GetMapping("/update")
+    public List<TransactionResponse> update(@RequestHeader String authorization,
+                                            @RequestParam
+                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                            LocalDateTime lastFetchedTime) {
+        String token = authorization.substring(7);
+        String userId = authService.validateUser(token);
+
+        List<TransactionResponse> transactions;
+
+        if(lastFetchedTime == null) {
+             transactions = Collections.emptyList();
+        }else {
+           transactions = transactionService.getUpdatePayments(UUID.fromString(userId), lastFetchedTime);
+        }
+        return transactions;
+    }
+
+    @GetMapping("/update/accounts/{accountId}")
+    ResponseEntity<Page<TransactionResponse>> getPaymentByAccountId(@PathVariable Long accountId,
+                                                                    Pageable pageable,
+                                                                    @RequestHeader("Authorization") String authorization,
+                                                                    @RequestParam
+                                                                    LocalDateTime lastFetchedTime
+                                                                    ){
+        String token = authorization.substring(7);
+        String userId = authService.validateUser(token);
+
+        Page<TransactionResponse> transactions;
+
+        if(lastFetchedTime == null) {
+            transactions = Page.empty(pageable);
+        }else{
+            transactions = transactionService.getUpdatePaymentsByAccountId(UUID.fromString(userId), accountId, lastFetchedTime);
+        }
+        return ResponseEntity.ok().body(transactions);
+    }
+
+    @GetMapping("/update/category/{categoryId}")
+    public List<TransactionResponse> getUpdatePayments(@PathVariable Long categoryId,
+                                                       @RequestHeader("Authorization") String authorization,
+                                                       @RequestParam LocalDateTime lastFetchedTime
+                                                       ){
+
+
+        String token = authorization.substring(7);
+        String userId = authService.validateUser(token);
+
+        List<TransactionResponse> transactions;
+
+        if(lastFetchedTime == null) {
+            transactions = Collections.emptyList();
+        }else {
+            transactions = transactionService.getUpdateCategoryPayments(UUID.fromString(userId), categoryId, lastFetchedTime);
+        }
+        return transactions;
     }
 }
