@@ -67,7 +67,6 @@ public class TransactionController {
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
 
-
         Page<TransactionResponse> response = transactionService.getByAccountId(UUID.fromString(userId), accountId);
         return ResponseEntity.ok().body(response);
     }
@@ -90,7 +89,6 @@ public class TransactionController {
                                                     @RequestParam int month,
                                                     @RequestHeader String authorization){
 
-
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
 
@@ -98,6 +96,7 @@ public class TransactionController {
         return monthlySpending;
     }
 
+    // 오늘로부터 30일 동안의 카테고리 별 소비 총액
     @GetMapping("/expenses/last-30-days")
     public List<MonthlySpendDto> getSumOfLast30Days(@RequestHeader String authorization){
         String token = authorization.substring(7);
@@ -106,6 +105,7 @@ public class TransactionController {
         return transactionService.getSumOfLast30Days(UUID.fromString(userId), startDate);
     }
 
+    // 카테고리 변경
     @PutMapping("/{transactionId}")
     public TransactionResponse updateCategory(@RequestHeader String authorization, @RequestBody Transaction transaction, @PathVariable Long transactionId) {
         String token = authorization.substring(7);
@@ -113,6 +113,7 @@ public class TransactionController {
         return transactionService.updateCategory(UUID.fromString(userId), transaction, transactionId);
     }
 
+    // 모든 월의 소비 총액
     @GetMapping("/expenses/monthly")
     public List<MonthlyExpenseDto> getMonthlyExpense(@RequestHeader String authorization){
         String token = authorization.substring(7);
