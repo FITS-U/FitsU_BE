@@ -110,4 +110,25 @@ public class TransactionServiceImpl implements TransactionService {
     public List<MonthlyExpenseDto> getMonthlyExpense(UUID userId) {
         return transactionRepository.findMonthlyExpenses(userId);
     }
+
+    @Override
+    public List<TransactionResponse> getUpdatePayments(UUID userId, LocalDateTime lastFetchedTime) {
+        List<Transaction> transactions = transactionRepository.findByUserIdAndLastFetchedTime(userId, lastFetchedTime);
+        List<TransactionResponse> list = transactions.stream().map(TransactionResponse::from).toList();
+        return list;
+    }
+
+    @Override
+    public Page<TransactionResponse> getUpdatePaymentsByAccountId(UUID userId, Long accountId, LocalDateTime lastFetchedTime) {
+        Pageable pageable = PageRequest.of(0,10);
+        Page<Transaction> payments = transactionRepository.findByUserIdAndAccountId(userId, accountId, pageable, lastFetchedTime);
+        return payments.map(TransactionResponse::from);
+    }
+
+    @Override
+    public List<TransactionResponse> getUpdateCategoryPayments(UUID userId, Long categoryId, LocalDateTime lastFetchedTime) {
+        List<Transaction> transactions = transactionRepository.findByUserIdAndCategoryId(userId, categoryId, lastFetchedTime);
+        List<TransactionResponse> list = transactions.stream().map(TransactionResponse::from).toList();
+        return list;
+    }
 }

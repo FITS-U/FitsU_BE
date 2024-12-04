@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
@@ -45,4 +46,24 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "group by year(t.createdAt), month(t.createdAt) ")
     List<MonthlyExpenseDto> findMonthlyExpenses(UUID userId);
 
+    @Query(value = "select t from Transaction t " +
+            "where t.userId = :userId " +
+            "and t.createdAt > :lastFetchedTime " +
+            "order by t.createdAt DESC ")
+    List<Transaction> findByUserIdAndLastFetchedTime(UUID userId, LocalDateTime lastFetchedTime);
+
+    @Query(value = "select t from Transaction t " +
+            "where t.userId = :userId " +
+            "and t.accountId = :accountId " +
+            "and t.createdAt > :lastFetchedTime " +
+            "order by t.createdAt DESC ")
+    Page<Transaction> findByUserIdAndAccountId(UUID userId , Long accountId, Pageable pageable, LocalDateTime lastFetchedTime);
+
+
+    @Query(value = "select t from Transaction t " +
+            "where t.userId = :userId " +
+            "and t.categoryId = :categoryId " +
+            "and t.createdAt > :lastFetchedTime " +
+            "order by t.createdAt DESC ")
+    List<Transaction> findByUserIdAndCategoryId(UUID userId, Long categoryId, LocalDateTime lastFetchedTime);
 }
