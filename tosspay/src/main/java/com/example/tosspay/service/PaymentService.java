@@ -37,14 +37,15 @@ public class PaymentService {
             throw new RuntimeException("결제 승인 실패: " + response.getBody());
         }
 
+        deductBalanceFromAccount(accountId, totalAmount, orderId);
     }
 
-    private void deductBalanceFromAccount(Long accountId, Double amount, String orderId) {
+    private void deductBalanceFromAccount(Long accountId, Double totalAmount, String orderId) {
         String accountServiceUrl = "http://localhost:8087/api/v1/accounts/deduct-balance";
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("accountId", accountId);
-        requestBody.put("amount", amount);
+        requestBody.put("amount", totalAmount);
         requestBody.put("orderId", orderId);
 
         HttpHeaders headers = new HttpHeaders();
