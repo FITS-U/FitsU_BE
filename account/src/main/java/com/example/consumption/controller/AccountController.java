@@ -5,6 +5,7 @@ import com.example.consumption.global.JwtUtils;
 import com.example.consumption.request.AccountRequest;
 import com.example.consumption.request.BalanceRequest;
 import com.example.consumption.response.AccountResponse;
+import com.example.consumption.response.BalanceResponse;
 import com.example.consumption.response.BankResponse;
 import com.example.consumption.service.AccountService;
 import com.example.consumption.service.AuthService;
@@ -80,13 +81,13 @@ public class AccountController {
     }
 
     @PostMapping("/accounts/deduct-balance")
-    public ResponseEntity<String> deductBalance(@RequestHeader("Authorization") String authorization,
-                                                @RequestBody BalanceRequest request) {
+    public ResponseEntity<BalanceResponse> deductBalance(@RequestHeader("Authorization") String authorization,
+                                                         @RequestBody BalanceRequest request) {
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
 
-        accountService.deductBalance(UUID.fromString(userId), request);
-        return ResponseEntity.ok("잔액 차감");
+        BalanceResponse response = accountService.deductBalance(UUID.fromString(userId), request);
+        return ResponseEntity.ok(response);
     }
 
 }

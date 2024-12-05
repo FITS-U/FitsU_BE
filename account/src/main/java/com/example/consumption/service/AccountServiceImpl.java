@@ -7,6 +7,7 @@ import com.example.consumption.repository.BankRepository;
 import com.example.consumption.request.AccountRequest;
 import com.example.consumption.request.BalanceRequest;
 import com.example.consumption.response.AccountResponse;
+import com.example.consumption.response.BalanceResponse;
 import com.example.consumption.response.BankResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -80,14 +81,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deductBalance(UUID userId, BalanceRequest request) {
-        Optional<UserAccount> accountsOptional = accountRepository.findById(request.getAccountId());
-        UserAccount userAccount = accountsOptional.orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + request.getAccountId()));
+    public BalanceResponse deductBalance(UUID userId, BalanceRequest request) {
+        UserAccount userAccount = accountRepository.findById(request.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + request.getAccountId()));
 
         if(userAccount.getBalance() < request.getAmount()) {
             throw new IllegalArgumentException("Not enough balance");
         }
+
+        Bank bank = userAccount.getBank();
+
         userAccount.setBalance(userAccount.getBalance() - request.getAmount());
         accountRepository.save(userAccount);
+
+        return BalanceResponse.from(userAccount, bank);
+
     }
 }
