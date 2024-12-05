@@ -1,6 +1,8 @@
 package com.example.tosspay.controller;
 
 import com.example.tosspay.dto.PaymentApprovalRequest;
+import com.example.tosspay.dto.PaymentApprovalResponse;
+import com.example.tosspay.entity.TossPaymentStatus;
 import com.example.tosspay.service.PaymentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+
 @RestController
 @RequestMapping("/api/v1/payments")
 @AllArgsConstructor
@@ -17,13 +21,22 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("/approve")
-    public ResponseEntity<String> approvePayment(@RequestBody PaymentApprovalRequest request){
+    public ResponseEntity<PaymentApprovalResponse> approvePayment(@RequestBody PaymentApprovalRequest request) {
         try {
-            paymentService.approvePayment(request.getTossPaymentKey(), request.getOrderId(), request.getAmount(), request.getAccountId(), request.getMethod());
-            return ResponseEntity.ok("결제 승인 완료");
+            PaymentApprovalResponse response = paymentService.approvePayment(request.getTossPaymentKey(), request.getOrderId(), request.getAmount());
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("결제 승인 실패: " + e.getMessage());
+            PaymentApprovalResponse errResponse = new PaymentApprovalResponse(
+                    TossPaymentStatus.FAILED,
+                    null,
+                    null,
+                    request.getOrderId(),
+                    null,
+                    null,
+                    request.getAmount(),
+                    Collections.emptyMap()
+            );
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errResponse);
         }
     }
-
 }

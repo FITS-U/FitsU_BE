@@ -25,7 +25,7 @@ public class Payment {
 
     private Double totalAmount;
     private LocalDateTime approvedAt;
-    private LocalDateTime requestedAt;
+    private LocalDateTime requestedAt= LocalDateTime.now();
     private String paymentDetails;
     private Long accountId;
 
