@@ -1,6 +1,8 @@
 package com.example.tosspay.service;
 
 import com.example.tosspay.config.TossPayConfig;
+import com.example.tosspay.dto.PaymentApprovalResponse;
+import com.example.tosspay.entity.TossPaymentMethod;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,14 +21,15 @@ public class PaymentService {
     private final TossPayConfig tossPayConfig;
     private final RestTemplate restTemplate;
 
-    public void approvePayment(String tossPaymentKey, String orderId, Double totalAmount, Long accountId) {
+    public void approvePayment(String tossPaymentKey, String orderId, Double totalAmount, Long accountId, TossPaymentMethod method) {
         String url = tossPayConfig.getApiUrl() + "/v1/payments/confirm";
 
         Map<String, Object> request = new HashMap<>();
         request.put("paymentKey", tossPaymentKey);
-        request.put("tossOrderId", orderId);
+        request.put("orderId", orderId);
         request.put("amount", totalAmount);
         request.put("accountId", accountId);
+        request.put("method", method);
 
         HttpHeaders headers = createHeaders(tossPayConfig.getTestSecretApiKey());
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);

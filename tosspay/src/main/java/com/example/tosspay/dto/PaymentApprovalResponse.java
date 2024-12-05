@@ -5,13 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-public class PaymentApprovalRequest {
+public class PaymentApprovalResponse {
+    private String status;
     private String tossPaymentKey;
-    private String orderId;
-    private Double amount;
-    private Long accountId;
     private TossPaymentMethod method;
+    private String orderId;
+    private LocalDateTime requestAt;
+    private LocalDateTime approvedAt;
+    private Double totalAmount;
 }

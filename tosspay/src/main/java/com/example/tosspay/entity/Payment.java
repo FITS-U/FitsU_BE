@@ -19,9 +19,9 @@ public class Payment {
     private String tossPaymentKey;
 
     @Enumerated(EnumType.STRING)
-    private TossPaymentMethod tossPaymentMethod;
+    private TossPaymentMethod method;
     @Enumerated(EnumType.STRING)
-    private TossPaymentStatus tossPaymentStatus;
+    private TossPaymentStatus status;
 
     private Double totalAmount;
     private LocalDateTime approvedAt;
