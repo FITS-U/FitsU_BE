@@ -1,19 +1,16 @@
 package com.example.payment.service;
 
 import com.example.payment.domain.Transaction;
-import com.example.payment.dto.MonthlyExpenseDto;
 import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.repository.TransactionRepository;
 import com.example.payment.response.TransactionResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,19 +22,12 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
 
     @Override
-    public List<TransactionResponse> getAllPayments(UUID userId) {
-        List<Transaction> payments = transactionRepository.findByUserIdOrderByCreatedAtDesc(userId);
-        List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
-        return list;
+    public List<TransactionResponse> getMonthlyPayments(UUID userId, int year, int month) {
+        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
+        List<Transaction> payments = transactionRepository.findTransactionsByUserAndYearAndMonth(userId, startDate, endDate);
+        return payments.stream().map(TransactionResponse::from).toList();
     }
-
-    @Override
-    public List<TransactionResponse> getPaymentsDetails(UUID userId, Long transactionId) {
-        List<Transaction> payments = transactionRepository.findByUserIdAndTransactionId(userId, transactionId);
-        List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
-        return list;
-    }
-
 
     @Override
     public Page<TransactionResponse> getByAccountId(UUID userId, Long accountId) {
@@ -71,13 +61,13 @@ public class TransactionServiceImpl implements TransactionService {
         LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0, 0);
         LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
         Double totalMonthlySpending = transactionRepository.findTotalMonthlySpending(userId, startDate, endDate);
-        return (totalMonthlySpending != null ? totalMonthlySpending : 0.0);
+        return (totalMonthlySpending != null ? totalMonthlySpending : 0);
     }
 
     @Override
     public List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate) {
-        return transactionRepository.findSumOfLast30Days(userId, startDate);
-
+        Pageable pageable = PageRequest.of(0, 3);
+        return transactionRepository.findSumOfLast30Days(userId, startDate, pageable);
     }
 
     @Override
@@ -104,31 +94,5 @@ public class TransactionServiceImpl implements TransactionService {
         } else {
             throw new RuntimeException("해당 결제 내역이 없습니다.");
         }
-    }
-
-    @Override
-    public List<MonthlyExpenseDto> getMonthlyExpense(UUID userId) {
-        return transactionRepository.findMonthlyExpenses(userId);
-    }
-
-    @Override
-    public List<TransactionResponse> getUpdatePayments(UUID userId, LocalDateTime lastFetchedTime) {
-        List<Transaction> transactions = transactionRepository.findByUserIdAndLastFetchedTime(userId, lastFetchedTime);
-        List<TransactionResponse> list = transactions.stream().map(TransactionResponse::from).toList();
-        return list;
-    }
-
-    @Override
-    public Page<TransactionResponse> getUpdatePaymentsByAccountId(UUID userId, Long accountId, LocalDateTime lastFetchedTime) {
-        Pageable pageable = PageRequest.of(0,10);
-        Page<Transaction> payments = transactionRepository.findByUserIdAndAccountId(userId, accountId, pageable, lastFetchedTime);
-        return payments.map(TransactionResponse::from);
-    }
-
-    @Override
-    public List<TransactionResponse> getUpdateCategoryPayments(UUID userId, Long categoryId, LocalDateTime lastFetchedTime) {
-        List<Transaction> transactions = transactionRepository.findByUserIdAndCategoryId(userId, categoryId, lastFetchedTime);
-        List<TransactionResponse> list = transactions.stream().map(TransactionResponse::from).toList();
-        return list;
     }
 }
