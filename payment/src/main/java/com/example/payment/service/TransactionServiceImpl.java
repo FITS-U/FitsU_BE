@@ -66,8 +66,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate) {
-        Pageable pageable = PageRequest.of(0, 3);
-        return transactionRepository.findSumOfLast30Days(userId, startDate, pageable);
+        return transactionRepository.findSumOfLast30Days(userId, startDate);
     }
 
     @Override
