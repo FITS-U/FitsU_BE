@@ -82,7 +82,7 @@ public class TransactionController {
     }
 
     @GetMapping("/expenses/last-30-days")
-    public List<MonthlySpendDto> getTop3CategoriesByLast30Days(@RequestHeader("Authorization") String authorization){
+    public List<MonthlySpendDto> getCategoriesByLast30Days(@RequestHeader("Authorization") String authorization){
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
