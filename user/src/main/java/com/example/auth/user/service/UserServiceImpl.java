@@ -3,6 +3,7 @@ package com.example.auth.user.service;
 import com.example.auth.global.JwtUtils;
 import com.example.auth.user.domain.dto.LoginRequest;
 import com.example.auth.user.domain.dto.RegisterRequest;
+import com.example.auth.user.domain.dto.UserNameResponse;
 import com.example.auth.user.domain.entity.User;
 import com.example.auth.user.repository.UserRepository;
 import com.sun.jdi.request.DuplicateRequestException;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -59,5 +61,17 @@ public class UserServiceImpl implements UserService{
         userRepository.save(loggedInUser);
 
         return jwtUtils.generateToken(loggedInUser.getUserId().toString());
+    }
+
+    @Override
+    public UserNameResponse getUserNameFromToken(String token){
+        String bearer = token.startsWith("Bearer ") ? token.substring(7) : token;
+        UUID userId = UUID.fromString(jwtUtils.parseToken(bearer));
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isEmpty()) {
+            throw new IllegalArgumentException("Invalid user ID");
+        }
+        String userName = user.get().getUserName();
+        return new UserNameResponse(userName);
     }
 }

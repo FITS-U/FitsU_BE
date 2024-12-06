@@ -3,6 +3,7 @@ package com.example.auth.user.controller;
 import com.example.auth.global.JwtUtils;
 import com.example.auth.user.domain.dto.LoginRequest;
 import com.example.auth.user.domain.dto.RegisterRequest;
+import com.example.auth.user.domain.dto.UserNameResponse;
 import com.example.auth.user.domain.dto.VerificationRequest;
 import com.example.auth.user.service.UserService;
 import lombok.*;
@@ -47,6 +48,13 @@ public class UserController {
 
         String token = authorization.substring(7);
         return jwtUtils.parseToken(token); // 사용자 ID 반환
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<UserNameResponse> getUserName(@RequestHeader("Authorization") String authorization) {
+        UserNameResponse name = userService.getUserNameFromToken(authorization);
+        return ResponseEntity.ok(name);
+
     }
 
 }
