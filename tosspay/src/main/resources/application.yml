@@ -1,0 +1,16 @@
+payment:
+  toss:
+    api_url: https://api.tosspayments.com
+    test_client_api_key: test_ck_6BYq7GWPVvNvvo7MBevXVNE5vbo1
+    test_secret_api_key: test_sk_XZYkKL4Mrj1beak6kjlAV0zJwlEW
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/tosspay?serverTimezone=Asia/Seoul
+    username: test
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8093
