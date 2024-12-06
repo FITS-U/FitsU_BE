@@ -55,6 +55,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "GROUP BY t.categoryId, t.categoryName " +
             "ORDER BY SUM(t.price) DESC")
     List<MonthlySpendDto> findSumOfLast30Days(@Param("userId") UUID userId,
-                                              @Param("startDate") LocalDateTime startDate,
-                                              Pageable pageable);
+                                              @Param("startDate") LocalDateTime startDate);
 }
