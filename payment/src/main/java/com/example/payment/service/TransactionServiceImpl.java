@@ -6,6 +6,7 @@ import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.repository.TransactionRepository;
 import com.example.payment.response.TransactionResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
@@ -129,6 +131,13 @@ public class TransactionServiceImpl implements TransactionService {
     public List<TransactionResponse> getUpdateCategoryPayments(UUID userId, Long categoryId, LocalDateTime lastFetchedTime) {
         List<Transaction> transactions = transactionRepository.findByUserIdAndCategoryId(userId, categoryId, lastFetchedTime);
         List<TransactionResponse> list = transactions.stream().map(TransactionResponse::from).toList();
+        return list;
+    }
+
+    @Override
+    public List<TransactionResponse> getUpdatePaymentDetails(UUID userId, Long transactionId, LocalDateTime lastFetchedTime) {
+        List<Transaction> payments = transactionRepository.findByUserIdAndTransactionId(userId, transactionId, lastFetchedTime);
+        List<TransactionResponse> list = payments.stream().map(TransactionResponse::from).toList();
         return list;
     }
 }

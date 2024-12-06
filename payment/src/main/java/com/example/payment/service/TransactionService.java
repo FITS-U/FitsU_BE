@@ -25,4 +25,5 @@ public interface TransactionService {
     List<TransactionResponse> getUpdatePayments(UUID userId, LocalDateTime lastFetchedTime);
     Page<TransactionResponse> getUpdatePaymentsByAccountId(UUID userId, Long accountId, LocalDateTime lastFetchedTime);
     List<TransactionResponse> getUpdateCategoryPayments(UUID userId, Long mainCtgId, LocalDateTime lastFetchedTime);
+    List<TransactionResponse> getUpdatePaymentDetails(UUID userId, Long transactionId, LocalDateTime lastFetchedTime);
 }

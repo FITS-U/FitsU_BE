@@ -66,4 +66,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             "and t.createdAt > :lastFetchedTime " +
             "order by t.createdAt DESC ")
     List<Transaction> findByUserIdAndCategoryId(UUID userId, Long categoryId, LocalDateTime lastFetchedTime);
+
+    @Query(value = "select t from Transaction t " +
+            "where t.userId = :userId " +
+            "and t.transactionId = :transactionId " +
+            "and t.createdAt > :lastFetchedTime " +
+            "order by t.createdAt DESC ")
+    List<Transaction> findByUserIdAndTransactionId(UUID userId, Long transactionId, LocalDateTime lastFetchedTime);
 }

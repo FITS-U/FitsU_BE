@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/payment" />
     <file type="web" url="file://$PROJECT_DIR$/user" />
   </component>
-  <component name="ProjectRootManager">
+  <component name="ProjectRootManager" version="2" default="true">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
