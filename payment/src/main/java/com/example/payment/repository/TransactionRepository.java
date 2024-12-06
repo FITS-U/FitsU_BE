@@ -19,14 +19,23 @@ import java.util.UUID;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByUserId(UUID userId);
     Page<Transaction> findByUserIdAndAccountIdOrderByCreatedAtDesc(UUID userId , Long accountId, Pageable pageable);
-    List<Transaction> findByUserIdAndCategoryIdOrderByCreatedAtDesc(UUID userId, Long categoryId);
+
+    @Query(value = "SELECT t FROM Transaction t " +
+            "WHERE t.userId = :userId " +
+            "AND t.categoryId = :categoryId " +
+            "AND t.createdAt BETWEEN :startDate AND :endDate " +
+            "ORDER BY t.createdAt DESC")
+    List<Transaction> findByUserIdAndCategoryIdAndCreatedAt(@Param("userId") UUID userId,
+                                                            @Param("categoryId") Long categoryId,
+                                                            @Param("startDate") LocalDateTime startDate,
+                                                            @Param("endDate") LocalDateTime endDate);
 
     @Query(value = "SELECT t FROM Transaction t " +
             "WHERE t.userId = :userId " +
             "AND t.createdAt BETWEEN :startDate AND :endDate " +
             "ORDER BY t.createdAt DESC")
     List<Transaction> findTransactionsByUserAndYearAndMonth(@Param("userId") UUID userId,
-                                                            @Param("startDate") LocalDateTime starDate,
+                                                            @Param("startDate") LocalDateTime startDate,
                                                             @Param("endDate") LocalDateTime endDate);
 
     @Query(value= "select sum(t.price) from Transaction t " +

@@ -37,8 +37,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId) {
-        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryIdOrderByCreatedAtDesc(userId, categoryId);
+    public List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId, int year, int month) {
+        LocalDateTime startDate = LocalDateTime.of(year, month, 1, 0 , 0);
+        LocalDateTime endDate = startDate.plusMonths(1).minusSeconds(1);
+        List<Transaction> payments = transactionRepository.findByUserIdAndCategoryIdAndCreatedAt(userId, categoryId, startDate, endDate);
         List<TransactionResponse> list = payments.stream()
                 .map(TransactionResponse::from)
                 .toList();

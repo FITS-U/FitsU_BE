@@ -63,11 +63,13 @@ public class TransactionController {
     // 한 카테고리의 결제 내역 목록 > 정렬
     @GetMapping("/category/{categoryId}")
     public List<TransactionResponse> getPaymentsByCategory(@PathVariable("categoryId") Long categoryId,
-                                                           @RequestHeader("Authorization") String authorization){
+                                                           @RequestHeader("Authorization") String authorization,
+                                                           @RequestParam("year") int year,
+                                                           @RequestParam("month") int month){
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
-        return transactionService.getCategoryPaymentDetails(UUID.fromString(userId), categoryId);
+        return transactionService.getCategoryPaymentDetails(UUID.fromString(userId), categoryId, year, month);
     }
 
     // 카테고리별 월 기준 총 지출

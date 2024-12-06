@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface TransactionService {
     List<TransactionResponse> getMonthlyPayments(UUID userId, int year, int month);
     Page<TransactionResponse> getByAccountId(UUID userId, Long accountId);
-    List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long mainCtgId);
+    List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId, int year, int month);
     Double getMonthlySpending(UUID userId, int year, int month);
     List<MonthlySpendDto> getMonthlySpendingByCategoryId(UUID userId , int year , int month);
     List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate);
