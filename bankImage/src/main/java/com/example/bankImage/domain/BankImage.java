@@ -11,6 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class BankImage {
     @Id
     private String id;
-    private String bankImageUrl;
+    private String imageUrl;
     private Long bankId;
 }
