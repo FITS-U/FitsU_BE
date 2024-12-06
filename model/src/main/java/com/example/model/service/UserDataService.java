@@ -1,12 +1,7 @@
 package com.example.model.service;
 
-import com.example.model.client.CategoryClient;
-import com.example.model.client.ClickLogClient;
-import com.example.model.client.ModelClient;
-import com.example.model.dto.AdResponse;
-import com.example.model.dto.CategoryResponse;
-import com.example.model.dto.LogResponse;
-import com.example.model.dto.UserInfoRequest;
+import com.example.model.client.*;
+import com.example.model.dto.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -21,6 +16,8 @@ public class UserDataService {
     private final ClickLogClient clickLogClient;
     private final ModelClient modelClient;
     private final WebClient webClient;
+    private final UserClient userClient;
+    private final TransactionClient transactionClient;
 
     public AdResponse getAdData(String authorization){
         List<CategoryResponse> categories = categoryClient.getCategoryByUserId(authorization);
@@ -40,4 +37,23 @@ public class UserDataService {
 
         return adResponse;
         }
+
+    public CardRecommendationResponse getRecommendData(String authorization){
+        UserNameResponse userName = userClient.getUserName(authorization);
+        List<MonthlySpendDto> sumOfLast30Days = transactionClient.getSumOfLast30Days(authorization);
+
+        UserRequest userRequest = new UserRequest(userName, sumOfLast30Days);
+
+        String flaskApiUrl = "http://15.168.20.238:9995/recommend";
+
+        CardRecommendationResponse response = webClient.post()
+                .uri(flaskApiUrl)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(userRequest)
+                .retrieve()
+                .bodyToMono(CardRecommendationResponse.class)
+                .block();
+
+        return response;
+    }
 }
