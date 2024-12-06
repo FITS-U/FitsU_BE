@@ -23,7 +23,7 @@ public class PaymentController {
     @PostMapping("/approve")
     public ResponseEntity<PaymentApprovalResponse> approvePayment(@RequestBody PaymentApprovalRequest request) {
         try {
-            PaymentApprovalResponse response = paymentService.approvePayment(request.getTossPaymentKey(), request.getOrderId(), request.getAmount());
+            PaymentApprovalResponse response = paymentService.approvePayment(request.getTossPaymentKey(), request.getOrderId(), request.getAmount(), request.getAccountId());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             PaymentApprovalResponse errResponse = new PaymentApprovalResponse(
