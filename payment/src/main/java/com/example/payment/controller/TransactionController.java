@@ -29,79 +29,61 @@ public class TransactionController {
     private final TransactionService transactionService;
     private final AuthService authService;
 
-    // 입출금 내역 목록 > 정렬
-    @GetMapping
-    public List<TransactionResponse> getAllPayments(@RequestHeader("Authorization") String authorization) {
+    // 월 기준 입출금 내역 목록
+    @GetMapping("/monthly")
+    public List<TransactionResponse> getMonthlyPayments(@RequestHeader("Authorization") String authorization,
+                                                    @RequestParam("year") int year, @RequestParam("month") int month) {
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
-
-        return transactionService.getAllPayments(UUID.fromString(userId));
-    }
-
-    //각 입출금 내역 별 상세
-    @GetMapping("/details/{transactionId}")
-    public List<TransactionResponse> getPaymentByTransactionId(@PathVariable Long transactionId, @RequestHeader("Authorization") String authorization) {
-
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-
-        return transactionService.getPaymentsDetails(UUID.fromString(userId), transactionId);
+        return transactionService.getMonthlyPayments(UUID.fromString(userId), year, month);
     }
 
     // 월 기준 총 지출
     @GetMapping("/mth-spend")
-    public Double getMonthSpend(@RequestHeader("Authorization") String authorization ,@RequestParam int year, @RequestParam int month) {
+    public Double getMonthSpend(@RequestHeader("Authorization") String authorization,
+                                @RequestParam("year") int year, @RequestParam("month") int month) {
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
-
-        Double monthlySpending = transactionService.getMonthlySpending(UUID.fromString(userId), year, month);
-        return monthlySpending;
+        return transactionService.getMonthlySpending(UUID.fromString(userId), year, month);
     }
 
     // 한 계좌의 소비 내역 > 정렬
     @GetMapping("/accounts/{accountId}")
-    public ResponseEntity<Page<TransactionResponse>> getPaymentByAccountId(@PathVariable Long accountId,
-                                                                           Pageable pageable,
+    public ResponseEntity<Page<TransactionResponse>> getPaymentByAccountId(@PathVariable("accountId") Long accountId,
                                                                            @RequestHeader("Authorization") String authorization) {
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
-
-
         Page<TransactionResponse> response = transactionService.getByAccountId(UUID.fromString(userId), accountId);
         return ResponseEntity.ok().body(response);
     }
 
     // 한 카테고리의 결제 내역 목록 > 정렬
     @GetMapping("/category/{categoryId}")
-    public List<TransactionResponse> getPaymentsByCategory(@PathVariable Long categoryId,
-                                                           @RequestHeader String authorization){
-
+    public List<TransactionResponse> getPaymentsByCategory(@PathVariable("categoryId") Long categoryId,
+                                                           @RequestHeader("Authorization") String authorization){
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
-
         return transactionService.getCategoryPaymentDetails(UUID.fromString(userId), categoryId);
     }
 
     // 카테고리별 월 기준 총 지출
     @GetMapping("/mth-expenses-by-category")
-    public List<MonthlySpendDto> getMonthlySpending(@RequestParam int year,
-                                                    @RequestParam int month,
-                                                    @RequestHeader String authorization){
-
+    public List<MonthlySpendDto> getMonthlySpending(@RequestParam("year") int year,
+                                                    @RequestParam("month") int month,
+                                                    @RequestHeader("Authorization") String authorization){
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
-
-        List<MonthlySpendDto> monthlySpending = transactionService.getMonthlySpendingByCategoryId(UUID.fromString(userId), year, month);
-        return monthlySpending;
+        return transactionService.getMonthlySpendingByCategoryId(UUID.fromString(userId), year, month);
     }
 
     @GetMapping("/expenses/last-30-days")
-    public List<MonthlySpendDto> getSumOfLast30Days(@RequestHeader String authorization){
+    public List<MonthlySpendDto> getTop3CategoriesByLast30Days(@RequestHeader("Authorization") String authorization){
+
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
         LocalDateTime startDate = LocalDateTime.now().minusDays(30);
@@ -109,75 +91,12 @@ public class TransactionController {
     }
 
     @PutMapping("/{transactionId}")
-    public TransactionResponse updateCategory(@RequestHeader String authorization, @RequestBody Transaction transaction, @PathVariable Long transactionId) {
+    public TransactionResponse updateCategory(@RequestHeader("Authorization") String authorization,
+                                              @RequestBody Transaction transaction,
+                                              @PathVariable("transactionId") Long transactionId) {
+
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
         return transactionService.updateCategory(UUID.fromString(userId), transaction, transactionId);
-    }
-
-    @GetMapping("/expenses/monthly")
-    public List<MonthlyExpenseDto> getMonthlyExpense(@RequestHeader String authorization){
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-        return transactionService.getMonthlyExpense(UUID.fromString(userId));
-    }
-
-    // /update?lastFetchedTime=2024-12-01T12:34:56Z
-    @GetMapping("/update")
-    public List<TransactionResponse> update(@RequestHeader String authorization,
-                                            @RequestParam
-                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                            LocalDateTime lastFetchedTime) {
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-
-        List<TransactionResponse> transactions;
-
-        if(lastFetchedTime == null) {
-             transactions = Collections.emptyList();
-        }else {
-           transactions = transactionService.getUpdatePayments(UUID.fromString(userId), lastFetchedTime);
-        }
-        return transactions;
-    }
-
-    @GetMapping("/update/accounts/{accountId}")
-    ResponseEntity<Page<TransactionResponse>> getPaymentByAccountId(@PathVariable Long accountId,
-                                                                    Pageable pageable,
-                                                                    @RequestHeader("Authorization") String authorization,
-                                                                    @RequestParam
-                                                                    LocalDateTime lastFetchedTime
-                                                                    ){
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-
-        Page<TransactionResponse> transactions;
-
-        if(lastFetchedTime == null) {
-            transactions = Page.empty(pageable);
-        }else{
-            transactions = transactionService.getUpdatePaymentsByAccountId(UUID.fromString(userId), accountId, lastFetchedTime);
-        }
-        return ResponseEntity.ok().body(transactions);
-    }
-
-    @GetMapping("/update/category/{categoryId}")
-    public List<TransactionResponse> getUpdatePayments(@PathVariable Long categoryId,
-                                                       @RequestHeader("Authorization") String authorization,
-                                                       @RequestParam LocalDateTime lastFetchedTime
-                                                       ){
-
-
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-
-        List<TransactionResponse> transactions;
-
-        if(lastFetchedTime == null) {
-            transactions = Collections.emptyList();
-        }else {
-            transactions = transactionService.getUpdateCategoryPayments(UUID.fromString(userId), categoryId, lastFetchedTime);
-        }
-        return transactions;
     }
 }
