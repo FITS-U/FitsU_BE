@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService{
     public String login(LoginRequest loginRequest, String token) {
         String phoneNum = jwtUtils.parseToken(token.substring(7));
 
-        Optional<User> loginUser = userRepository.findByUserName(loginRequest.userName());
+        Optional<User> loginUser = userRepository.findByUserNameAndPhoneNum(loginRequest.userName(), phoneNum);
         if(loginUser.isEmpty()) {
-            throw new RuntimeException("해당 이름을 가진 사용자가 없습니다");
+            throw new RuntimeException("사용자 이름 또는 핸드폰 번호가 일치하지 않습니다.");
         }
 
         User user = loginUser.get();
