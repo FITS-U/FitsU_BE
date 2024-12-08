@@ -85,7 +85,6 @@ public class TransactionController {
 
     @GetMapping("/expenses/last-30-days")
     public List<MonthlySpendDto> getCategoriesByLast30Days(@RequestHeader("Authorization") String authorization){
-
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
         LocalDateTime startDate = LocalDateTime.now().minusDays(30);
