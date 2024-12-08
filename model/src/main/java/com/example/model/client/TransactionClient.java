@@ -11,5 +11,5 @@ import java.util.List;
 @FeignClient(name = "transaction-service", url = "http://localhost:8084")
 public interface TransactionClient {
     @GetMapping("api/v1/transactions/expenses/last-30-days")
-    List<MonthlySpendDto> getSumOfLast30Days(@RequestHeader("Authorization") String authorization);
+    List<MonthlySpendDto> getCategoriesByLast30Days(@RequestHeader("Authorization") String authorization);
 }

@@ -17,8 +17,8 @@ public class CardRecommendController {
 
     @GetMapping
     public ResponseEntity<CardRecommendationResponse> getCardRecommendation(@RequestHeader("Authorization") String authorization) {
-        String token = authorization.substring(7);
-        CardRecommendationResponse recommendData = userDataService.getRecommendData(token);
+//        System.out.println("Authorization Header: " + authorization);
+        CardRecommendationResponse recommendData = userDataService.getRecommendData(authorization);
         return ResponseEntity.ok(recommendData);
     }
 }
