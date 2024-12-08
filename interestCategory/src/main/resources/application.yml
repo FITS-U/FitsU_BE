@@ -3,11 +3,11 @@ server:
 
 spring:
   application:
-    name: user
+    name: interestCategory
   datasource:
-    url: jdbc:mysql://localhost:3306/interest_category?serverTimezone=Asia/Seoul
-    username: test
-    password: 1234
+    url: jdbc:postgresql://56.155.9.34:5432/interestcategory
+    username: postgres
+    password: "0714"
   jpa:
     hibernate:
       ddl-auto: update
