@@ -9,6 +9,6 @@ import java.util.List;
 
 @FeignClient(name = "clickLog-service", url = "http://localhost:8088")
 public interface ClickLogClient {
-    @GetMapping("/api/v1/log")
+    @GetMapping("/api/v1/logs")
     List<LogResponse> getLogs(@RequestHeader("Authorization") String authorization);
 }

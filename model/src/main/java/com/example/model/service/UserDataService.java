@@ -4,11 +4,14 @@ import com.example.model.client.*;
 import com.example.model.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -50,6 +53,9 @@ public class UserDataService {
         // request 데이터를 JSON 문자열로 변환 (예: Jackson ObjectMapper 사용)
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
             String requestBody = objectMapper.writeValueAsString(request);
             System.out.println("Test RequestBody: " + requestBody);
         } catch (JsonProcessingException e) {
