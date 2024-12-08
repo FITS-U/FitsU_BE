@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://root:example@ec2-56-155-9-34.ap-northeast-3.compute.amazonaws.com:27017/bankImage?authSource=admin
+
+server:
+  port: 8090
