@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Builder
 public record CategoryResponse(
-        Long categoryId
+        Long categoryid
 ) {
     public static CategoryResponse from (CategoryOfInterest categoryOfInterest) {
         return new CategoryResponse(
