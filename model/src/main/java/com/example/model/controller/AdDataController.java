@@ -18,8 +18,7 @@ public class AdDataController {
 
     @GetMapping
     public ResponseEntity<AdResponse> getAdData(@RequestHeader("Authorization") String authorization) {
-        String token = authorization.substring(7);
-        AdResponse adData = userDataService.getAdData(token);
+        AdResponse adData = userDataService.getAdData(authorization);
         return ResponseEntity.ok(adData);
     }
 
