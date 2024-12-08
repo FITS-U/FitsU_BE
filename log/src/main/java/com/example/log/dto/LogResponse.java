@@ -5,7 +5,7 @@ import com.example.log.domain.Log;
 import java.time.LocalDateTime;
 
 public record LogResponse(
-        Long categoryId,
+        Long categoryid,
         String eventType,
         LocalDateTime clickTime
 ) {
