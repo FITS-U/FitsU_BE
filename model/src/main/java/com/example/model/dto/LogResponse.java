@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LogResponse {
-    private Long categoryId;
+    private Long categoryid;
     private String eventType;
     private LocalDateTime clickTime;
 }
