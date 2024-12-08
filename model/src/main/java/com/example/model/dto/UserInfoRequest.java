@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserInfoRequest {
-    private List<CategoryResponse> categories;
+    private List<CategoryResponse> category;
     private List<LogResponse> logs;
 }
