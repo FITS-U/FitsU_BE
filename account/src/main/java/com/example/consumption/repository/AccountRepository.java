@@ -11,9 +11,8 @@ import java.util.UUID;
 
 public interface AccountRepository extends JpaRepository<UserAccount, Long> {
     List<UserAccount> findByUserId(UUID userId);
-
-
     UserAccount save(UserAccount userAccount);
+
     @Query(value = "select ua " +
             "from UserAccount ua " +
             "where ua.isLinked = true " +
