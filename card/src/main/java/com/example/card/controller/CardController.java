@@ -1,6 +1,7 @@
 package com.example.card.controller;
 
 import com.example.card.domain.CardInfo;
+import com.example.card.response.CardBenefitResponse;
 import com.example.card.response.CardResponse;
 import com.example.card.response.CategoryResponse;
 import com.example.card.service.CardService;
@@ -25,7 +26,7 @@ public class CardController {
     }
 
     @GetMapping
-    public List<CardResponse> getAllCards() {
+    public List<CardBenefitResponse> getAllCards() {
         return cardService.getAllCards();
     }
 

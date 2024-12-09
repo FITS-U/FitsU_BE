@@ -4,6 +4,7 @@ import com.example.card.domain.CardInfo;
 import com.example.card.domain.Category;
 import com.example.card.repository.CardRepository;
 import com.example.card.repository.CategoryRepository;
+import com.example.card.response.CardBenefitResponse;
 import com.example.card.response.CardResponse;
 import com.example.card.response.CategoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +38,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<CardResponse> getAllCards() {
-        List<CardResponse> allCards = cardRepository.findAllCards();
+    public List<CardBenefitResponse> getAllCards() {
+        List<CardBenefitResponse> allCards = cardRepository.findAllCards();
         return allCards;
     }
 }
