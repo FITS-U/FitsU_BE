@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @RestController
 @AllArgsConstructor
@@ -17,9 +19,8 @@ public class AdDataController {
     private final UserDataService userDataService;
 
     @GetMapping
-    public ResponseEntity<AdResponse> getAdData(@RequestHeader("Authorization") String authorization) {
-        AdResponse adData = userDataService.getAdData(authorization);
-        return ResponseEntity.ok(adData);
+    public List<AdResponse> getAdData(@RequestHeader("Authorization") String authorization) {
+        List<AdResponse> adData = userDataService.getAdData(authorization);
+        return adData;
     }
-
 }

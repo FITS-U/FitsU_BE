@@ -7,11 +7,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -24,7 +34,7 @@ public class UserDataService {
     private final TransactionClient transactionClient;
     private final ObjectMapper objectMapper;
 
-    public AdResponse getAdData(String authorization){
+    public List<AdResponse> getAdData(String authorization){
 
         List<CategoryResponse> categories = categoryClient.getCategoryByUserId(authorization);
         List<LogResponse> logs = clickLogClient.getLogs(authorization);
@@ -41,14 +51,17 @@ public class UserDataService {
         }
 
         String flaskApiUrl = "http://56.155.9.34:5000/generate_ads";
-        AdResponse adResponse = webClient.post()
+        Flux<AdResponse> adResponseFlux = webClient.post()
                 .uri(flaskApiUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(request)
                 .retrieve()
-                .bodyToMono(AdResponse.class)
-                .block();
-
+                .bodyToFlux(AdResponse.class);
+        List<AdResponse> adResponse = adResponseFlux.collectList().block(Duration.of(1, ChronoUnit.MINUTES));
+        if (adResponse == null || adResponse.isEmpty()) {
+            throw new RuntimeException("Flask API로부터 광고 데이터를 받지 못했습니다.");
+        }
+        System.out.println(adResponse);
         return adResponse;
     }
 
@@ -74,7 +87,7 @@ public class UserDataService {
                 .bodyValue(userRequest)
                 .retrieve()
                 .bodyToMono(CardRecommendationResponse.class)
-                .block();
+                .block(Duration.of(1, ChronoUnit.MINUTES));
 
         return response;
     }
