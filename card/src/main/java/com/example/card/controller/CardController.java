@@ -7,6 +7,8 @@ import com.example.card.response.CategoryResponse;
 import com.example.card.service.CardService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +22,10 @@ public class CardController {
 
     private final CardService cardService;
 
-    @GetMapping("/{cardId}")
-    public List<CardResponse> getCardDetails(@PathVariable Long cardId) {
-        return cardService.getCardDetails(cardId);
+    @GetMapping(value ="/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CardResponse> getCardDetails(@PathVariable Long cardId) {
+        CardResponse cardResponse = cardService.getCardDetails(cardId);
+        return ResponseEntity.ok(cardResponse);
     }
 
     @GetMapping

@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Service
 public interface CardService {
-    List<CardResponse> getCardDetails(Long cardId);
+    CardResponse getCardDetails(Long cardId);
     List<CardResponse> getUserCardDetails(Long cardId);
     List<CategoryResponse> getAllCategories();
     List<CardBenefitResponse> getAllCards();

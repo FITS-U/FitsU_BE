@@ -1,37 +1,19 @@
 package com.example.card.response;
 
-import com.example.card.domain.*;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+
+@Getter
+@Setter
 @Builder
-public record CardResponse(
-        Long cardId,
-        String cardName,
-        String prevSales,
-        String annualFee,
-        String benefitTitle,
-        String description,
-        Long categoryId,
-        String categoryName
-        ) {
-
-    public static CardResponse from(
-            CardInfo cardInfo,
-            Benefit benefit,
-            Category category
-            ) {
-        return new CardResponse(
-                cardInfo.getCardId(),
-                cardInfo.getCardName(),
-                cardInfo.getPrevSales(),
-                cardInfo.getAnnualFee(),
-                benefit.getBenefitTitle(),
-                benefit.getDescription(),
-                category.getCategoryId(),
-                category.getCategoryName()
-        );
-
-
+public class CardResponse{
+        private Long cardId;
+        private String cardName;
+        private String prevSales;
+        private String annualFee;
+        private List<BenefitResponse> benefits;
     }
 
-}
