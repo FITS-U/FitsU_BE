@@ -50,7 +50,7 @@ public class UserDataService {
             throw new RuntimeException(e);
         }
 
-        String flaskApiUrl = "http://56.155.9.34:5000/generate_ads";
+        String flaskApiUrl = "http://15.152.44.222:3434/generate_ads";
         Flux<AdResponse> adResponseFlux = webClient.post()
                 .uri(flaskApiUrl)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -80,7 +80,7 @@ public class UserDataService {
             throw new RuntimeException(e);
         }
 
-        String flaskApiUrl = "http://15.168.20.238:9995/recommend";
+        String flaskApiUrl = "http://15.152.44.222:9995/recommend";
         CardRecommendationResponse response = webClient.post()
                 .uri(flaskApiUrl)
                 .contentType(MediaType.APPLICATION_JSON)

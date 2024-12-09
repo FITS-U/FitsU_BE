@@ -10,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class AdResponse {
-    private Long cardid;
+    private Long card_id;
     private String adCopy1;
     private String adCopy2;
 }

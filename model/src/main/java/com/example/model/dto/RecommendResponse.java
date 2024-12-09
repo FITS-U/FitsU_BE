@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class RecommendResponse {
+    private String repBenefits;
     private Long cardId;
+    private String cardName;
     private String details;
-    private String ment;
 }
