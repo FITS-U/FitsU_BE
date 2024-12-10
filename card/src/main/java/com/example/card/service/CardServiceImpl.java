@@ -1,5 +1,6 @@
 package com.example.card.service;
 
+import com.example.card.domain.CardInfo;
 import com.example.card.domain.Category;
 import com.example.card.repository.CardRepository;
 import com.example.card.repository.CategoryRepository;
@@ -67,5 +68,10 @@ public class CardServiceImpl implements CardService {
     public List<CardBenefitResponse> getAllCards() {
         List<CardBenefitResponse> allCards = cardRepository.findAllCards();
         return allCards;
+    }
+
+    @Override
+    public ImageUrlResponse getCardImage(Long cardId) {
+        return cardRepository.findImageUrlByCardId(cardId);
     }
 }

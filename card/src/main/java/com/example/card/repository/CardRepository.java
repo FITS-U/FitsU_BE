@@ -4,6 +4,7 @@ import com.example.card.domain.CardInfo;
 import com.example.card.domain.Category;
 import com.example.card.response.CardBenefitResponse;
 import com.example.card.response.CardResponse;
+import com.example.card.response.ImageUrlResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +28,9 @@ public interface CardRepository extends JpaRepository<CardInfo, Long> {
             "LEFT JOIN Benefit b ON ci.cardId = b.cardInfo.cardId " +
             "LEFT JOIN Category c ON c.categoryId = b.category.categoryId ")
     List<CardBenefitResponse> findAllCards();
+
+    @Query("select new com.example.card.response.ImageUrlResponse(ci.imageUrl)" +
+            "FROM CardInfo ci " +
+            "where ci.cardId = :cardId")
+    ImageUrlResponse findImageUrlByCardId(@Param("cardId") Long cardId);
 }
