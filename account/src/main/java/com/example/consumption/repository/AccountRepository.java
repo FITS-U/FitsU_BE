@@ -16,7 +16,7 @@ public interface AccountRepository extends JpaRepository<UserAccount, Long> {
     @Query(value = "select ua " +
             "from UserAccount ua " +
             "where ua.isLinked = true " +
-            "and ua.userId = :userId")
+            "and ua.userId = :userId " )
     List<UserAccount> findUserAccountByUserId(UUID userId);
 
     @Query(value = "select ua " +

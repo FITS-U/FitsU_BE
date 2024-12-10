@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Builder
 public record AccountResponse (
-        Long accountId, String accountNum, String accName, Double balance, Long bankId, String bankName,Boolean isLinked ) {
+        Long accountId, String accountNum, String accName, Double balance, Long bankId, String bankName, String imageUrl, Boolean isLinked ) {
 
     public static AccountResponse from(UserAccount userAccount) {
         return new AccountResponse(
@@ -17,6 +17,7 @@ public record AccountResponse (
                 userAccount.getBalance(),
                 userAccount.getBank().getBankId(),
                 userAccount.getBank().getBankName(),
+                userAccount.getBank().getImageUrl(),
                 userAccount.getIsLinked()
         );
     }
