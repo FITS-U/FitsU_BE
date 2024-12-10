@@ -15,14 +15,14 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<CardInfo, Long> {
 
     @Query("SELECT ci.cardId, ci.cardName, " +
-            "ci.prevSales, ci.annualFee, b.benefitTitle, b.description, c.categoryId, c.categoryName " +
+            "ci.prevSales, ci.annualFee, ci.cardApplyUrl, b.benefitTitle, b.description, c.categoryId, c.categoryName " +
             "FROM CardInfo ci " +
             "LEFT JOIN Benefit b ON ci.cardId = b.cardInfo.cardId " +
             "LEFT JOIN Category c ON c.categoryId = b.category.categoryId " +
             "WHERE ci.cardId = :cardId")
     List<Object[]> findCardDetails(@Param("cardId") Long cardId);
 
-    @Query("select new com.example.card.response.CardBenefitResponse(ci.cardId, ci.cardName, b.benefitTitle, c.categoryId)" +
+    @Query("select new com.example.card.response.CardBenefitResponse(ci.cardId, ci.cardName, ci.imageUrl, b.benefitTitle, c.categoryId)" +
             "FROM CardInfo ci " +
             "LEFT JOIN Benefit b ON ci.cardId = b.cardInfo.cardId " +
             "LEFT JOIN Category c ON c.categoryId = b.category.categoryId ")

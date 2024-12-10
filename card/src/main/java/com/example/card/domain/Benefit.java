@@ -17,6 +17,7 @@ public class Benefit {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long benefitId;
     private String benefitTitle;
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne

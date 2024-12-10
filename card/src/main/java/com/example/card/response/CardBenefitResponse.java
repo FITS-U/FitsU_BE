@@ -9,6 +9,7 @@ import lombok.Builder;
 public record CardBenefitResponse(
         Long cardId,
         String cardName,
+        String imageUrl,
         String benefitTitle,
         Long categoryId
 ) {
@@ -21,6 +22,7 @@ public record CardBenefitResponse(
         return new CardBenefitResponse(
                 cardInfo.getCardId(),
                 cardInfo.getCardName(),
+                cardInfo.getImageUrl(),
                 benefit.getBenefitTitle(),
                 category.getCategoryId()
         );
