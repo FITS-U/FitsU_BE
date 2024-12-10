@@ -11,6 +11,8 @@ import lombok.ToString;
 @ToString
 public class AdResponse {
     private Long card_id;
+    private String card_name;
     private String adCopy1;
     private String adCopy2;
+    private String image_url;
 }

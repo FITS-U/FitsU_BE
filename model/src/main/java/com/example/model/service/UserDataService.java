@@ -65,7 +65,7 @@ public class UserDataService {
         return adResponse;
     }
 
-    public CardRecommendationResponse getRecommendData(String authorization){
+    public List<RecommendResponse> getRecommendData(String authorization){
         UserNameResponse userName = userClient.getUserName(authorization);
         List<MonthlySpendDto> sumOfLast30Days = transactionClient.getCategoriesByLast30Days(authorization);
 
@@ -81,14 +81,14 @@ public class UserDataService {
         }
 
         String flaskApiUrl = "http://15.152.44.222:9995/recommend";
-        CardRecommendationResponse response = webClient.post()
+        Flux<RecommendResponse> recommendResponseFlux = webClient.post()
                 .uri(flaskApiUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(userRequest)
                 .retrieve()
-                .bodyToMono(CardRecommendationResponse.class)
-                .block(Duration.of(1, ChronoUnit.MINUTES));
+                .bodyToFlux(RecommendResponse.class);
 
+        List<RecommendResponse> response = recommendResponseFlux.collectList().block(Duration.of(1, ChronoUnit.MINUTES));
         return response;
     }
 }
