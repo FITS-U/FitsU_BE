@@ -30,9 +30,6 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("인증 코드가 유효하지 않거나 만료되었습니다.");
         }
 
-//        User user = userRepository.findByPhoneNum(phoneNum)
-//                .orElseThrow(() -> new RuntimeException("유효한 사용자가 없습니다."));
-
         return jwtUtils.generateToken(phoneNum); // 임시 토큰 발급
     }
 
