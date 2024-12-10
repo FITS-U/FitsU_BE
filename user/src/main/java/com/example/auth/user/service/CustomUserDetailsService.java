@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("유효하지 않은 사용자 ID 형식입니다.");
         }
 
-        List<User> users = userRepository.findByUserId(userId);
+        List<User> users = userRepository.findByUserId(userId.toString());
         if (users.isEmpty()) {
             throw new UsernameNotFoundException("해당 ID의 사용자를 찾을 수 없습니다.");
         }
