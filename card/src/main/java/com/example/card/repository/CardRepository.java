@@ -15,7 +15,7 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<CardInfo, Long> {
 
     @Query("SELECT ci.cardId, ci.cardName, " +
-            "ci.prevSales, ci.annualFee, ci.cardApplyUrl, b.benefitTitle, b.description, c.categoryId, c.categoryName " +
+            "ci.prevSales, ci.annualFee, ci.cardApplyUrl, ci.imageUrl,b.benefitTitle, b.description, c.categoryId, c.categoryName " +
             "FROM CardInfo ci " +
             "LEFT JOIN Benefit b ON ci.cardId = b.cardInfo.cardId " +
             "LEFT JOIN Category c ON c.categoryId = b.category.categoryId " +

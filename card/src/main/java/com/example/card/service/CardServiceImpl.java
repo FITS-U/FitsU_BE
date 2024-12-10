@@ -29,12 +29,13 @@ public class CardServiceImpl implements CardService {
         String prevSales = (String) firstResult[2];
         String annualFee = (String) firstResult[3];
         String cardApplyUrl = (String) firstResult[4];
+        String imageUrl = (String) firstResult[5];
 
         List<BenefitResponse> benefits = results.stream().map(result -> BenefitResponse.builder()
-                        .benefitTitle((String) result[5])
-                        .description((String) result[6])
-                        .categoryId((Long) result[7])
-                        .categoryName((String) result[8])
+                        .benefitTitle((String) result[6])
+                        .description((String) result[7])
+                        .categoryId((Long) result[8])
+                        .categoryName((String) result[9])
                         .build())
                 .toList();
 
@@ -44,6 +45,7 @@ public class CardServiceImpl implements CardService {
                 .prevSales(prevSales)
                 .annualFee(annualFee)
                 .cardApplyUrl(cardApplyUrl)
+                .imageUrl(imageUrl)
                 .benefits(benefits)
                 .build();
 

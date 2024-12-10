@@ -20,7 +20,7 @@ public class CardController {
 
     private final CardService cardService;
 
-    @GetMapping(value ="/{cardId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/{cardId}")
     public ResponseEntity<CardResponse> getCardDetails(@PathVariable Long cardId) {
         CardResponse cardResponse = cardService.getCardDetails(cardId);
         return ResponseEntity.ok(cardResponse);

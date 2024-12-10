@@ -15,6 +15,7 @@ public class CardResponse{
         private String prevSales;
         private String annualFee;
         private String cardApplyUrl;
+        private String imageUrl;
         private List<BenefitResponse> benefits;
     }
 
