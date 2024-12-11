@@ -1,6 +1,5 @@
 package com.example.model.controller;
 
-import com.example.model.dto.CardRecommendationResponse;
 import com.example.model.dto.RecommendResponse;
 import com.example.model.service.UserDataService;
 import lombok.AllArgsConstructor;

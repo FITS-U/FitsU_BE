@@ -30,7 +30,6 @@ public class UserDataService {
     private final CategoryClient categoryClient;
     private final ClickLogClient clickLogClient;
     private final WebClient webClient;
-    private final UserClient userClient;
     private final TransactionClient transactionClient;
     private final ObjectMapper objectMapper;
 
@@ -66,10 +65,8 @@ public class UserDataService {
     }
 
     public List<RecommendResponse> getRecommendData(String authorization){
-        UserNameResponse userName = userClient.getUserName(authorization);
         List<MonthlySpendDto> sumOfLast30Days = transactionClient.getCategoriesByLast30Days(authorization);
-
-        UserRequest userRequest = new UserRequest(userName, sumOfLast30Days);
+        UserRequest userRequest = new UserRequest(sumOfLast30Days);
 
         String json;
 

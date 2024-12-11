@@ -10,6 +10,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequest {
-    UserNameResponse user;
     List<MonthlySpendDto> expenseCategories;
 }
