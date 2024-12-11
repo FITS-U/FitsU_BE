@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequest {
-    List<MonthlyPaymentDto> expenseCategories;
+public class PaymentDto {
+    private String recipient;
+    private Double price;
+    private String categoryName;
 }

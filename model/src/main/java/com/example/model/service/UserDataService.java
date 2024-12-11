@@ -4,23 +4,13 @@ import com.example.model.client.*;
 import com.example.model.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -65,7 +55,7 @@ public class UserDataService {
     }
 
     public List<RecommendResponse> getRecommendData(String authorization){
-        List<MonthlySpendDto> sumOfLast30Days = transactionClient.getCategoriesByLast30Days(authorization);
+        List<MonthlyPaymentDto> sumOfLast30Days = transactionClient.getLast30Days(authorization);
         UserRequest userRequest = new UserRequest(sumOfLast30Days);
 
         String json;
