@@ -2,7 +2,10 @@ package com.example.payment.service;
 
 import com.example.payment.domain.Transaction;
 import com.example.payment.dto.MonthlyExpenseDto;
+import com.example.payment.dto.MonthlyPaymentDto;
 import com.example.payment.dto.MonthlySpendDto;
+import com.example.payment.response.PaymentResponse;
+import com.example.payment.response.PaymentsResponse;
 import com.example.payment.response.TransactionResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -20,4 +23,7 @@ public interface TransactionService {
     List<MonthlySpendDto> getMonthlySpendingByCategoryId(UUID userId , int year , int month);
     List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate);
     TransactionResponse updateCategory(UUID userId, Transaction transaction, Long transactionId);
+    List<MonthlyPaymentDto> getPaymentsOfLast30Days(UUID userId, LocalDateTime startDate);
+    List<PaymentResponse> getPayments(UUID userId, LocalDateTime startDate);
+    List<PaymentsResponse> getPaymentsByCategory(UUID userId, LocalDateTime startDate);
 }

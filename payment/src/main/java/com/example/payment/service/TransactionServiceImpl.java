@@ -1,8 +1,11 @@
 package com.example.payment.service;
 
 import com.example.payment.domain.Transaction;
+import com.example.payment.dto.MonthlyPaymentDto;
 import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.repository.TransactionRepository;
+import com.example.payment.response.PaymentResponse;
+import com.example.payment.response.PaymentsResponse;
 import com.example.payment.response.TransactionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -95,5 +98,20 @@ public class TransactionServiceImpl implements TransactionService {
         } else {
             throw new RuntimeException("해당 결제 내역이 없습니다.");
         }
+    }
+
+    @Override
+    public List<MonthlyPaymentDto> getPaymentsOfLast30Days(UUID userId, LocalDateTime startDate) {
+        return transactionRepository.findPaymentsOfLast30Days(userId, startDate);
+    }
+
+    @Override
+    public List<PaymentResponse> getPayments(UUID userId, LocalDateTime startDate) {
+        return transactionRepository.findTransactionByUserId(userId, startDate);
+    }
+
+    @Override
+    public List<PaymentsResponse> getPaymentsByCategory(UUID userId, LocalDateTime startDate) {
+        return transactionRepository.findPaymentsByUserId(userId, startDate);
     }
 }
