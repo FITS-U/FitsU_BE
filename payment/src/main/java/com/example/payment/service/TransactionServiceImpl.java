@@ -1,11 +1,9 @@
 package com.example.payment.service;
 
 import com.example.payment.domain.Transaction;
-import com.example.payment.dto.MonthlyPaymentDto;
 import com.example.payment.dto.MonthlySpendDto;
 import com.example.payment.repository.TransactionRepository;
 import com.example.payment.response.PaymentResponse;
-import com.example.payment.response.PaymentsResponse;
 import com.example.payment.response.TransactionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -70,11 +68,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<MonthlySpendDto> getSumOfLast30Days(UUID userId, LocalDateTime startDate) {
-        return transactionRepository.findSumOfLast30Days(userId, startDate);
-    }
-
-    @Override
     public TransactionResponse updateCategory(UUID userId, Transaction transaction, Long transactionId) {
         Optional<Transaction> byId = transactionRepository.findById(transactionId);
         if (byId.isPresent()) {
@@ -101,17 +94,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<MonthlyPaymentDto> getPaymentsOfLast30Days(UUID userId, LocalDateTime startDate) {
-        return transactionRepository.findPaymentsOfLast30Days(userId, startDate);
-    }
-
-    @Override
     public List<PaymentResponse> getPayments(UUID userId, LocalDateTime startDate) {
         return transactionRepository.findTransactionByUserId(userId, startDate);
-    }
-
-    @Override
-    public List<PaymentsResponse> getPaymentsByCategory(UUID userId, LocalDateTime startDate) {
-        return transactionRepository.findPaymentsByUserId(userId, startDate);
     }
 }

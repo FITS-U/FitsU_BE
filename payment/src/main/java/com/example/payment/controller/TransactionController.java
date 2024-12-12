@@ -1,26 +1,17 @@
 package com.example.payment.controller;
 
 import com.example.payment.domain.Transaction;
-import com.example.payment.dto.MonthlyExpenseDto;
-import com.example.payment.dto.MonthlyPaymentDto;
 import com.example.payment.dto.MonthlySpendDto;
-import com.example.payment.global.JwtUtils;
 import com.example.payment.response.PaymentResponse;
-import com.example.payment.response.PaymentsResponse;
 import com.example.payment.response.TransactionResponse;
 import com.example.payment.service.AuthService;
 import com.example.payment.service.TransactionService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,13 +77,6 @@ public class TransactionController {
         return transactionService.getMonthlySpendingByCategoryId(UUID.fromString(userId), year, month);
     }
 
-    @GetMapping("/expenses/last-30-days")
-    public List<MonthlySpendDto> getCategoriesByLast30Days(@RequestHeader("Authorization") String authorization){
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-        LocalDateTime startDate = LocalDateTime.now().minusDays(30);
-        return transactionService.getSumOfLast30Days(UUID.fromString(userId), startDate);
-    }
 
     @PutMapping("/{transactionId}")
     public TransactionResponse updateCategory(@RequestHeader("Authorization") String authorization,
@@ -104,15 +88,6 @@ public class TransactionController {
         return transactionService.updateCategory(UUID.fromString(userId), transaction, transactionId);
     }
 
-    // 결제처, 금액
-    @GetMapping("/payments/last-30-days")
-    public List<MonthlyPaymentDto> getPaymentsByLast30Days(@RequestHeader("Authorization") String authorization){
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-        LocalDateTime startDate = LocalDateTime.now().minusDays(30);
-        return transactionService.getPaymentsOfLast30Days(UUID.fromString(userId), startDate);
-    }
-
     // 결제처, 금액, 카테고리
     @GetMapping("/list/last-30-days")
     public List<PaymentResponse> getPayments(@RequestHeader("Authorization") String authorization){
@@ -120,14 +95,5 @@ public class TransactionController {
         String userId = authService.validateUser(token);
         LocalDateTime startDate = LocalDateTime.now().minusDays(30);
         return transactionService.getPayments(UUID.fromString(userId), startDate);
-    }
-
-    // 카테고리, 금액
-    @GetMapping("list/by-category/last-30-days")
-    public List<PaymentsResponse> getPaymentsByCategory(@RequestHeader("Authorization") String authorization){
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-        LocalDateTime startDate = LocalDateTime.now().minusDays(30);
-        return transactionService.getPaymentsByCategory(UUID.fromString(userId), startDate);
     }
 }
