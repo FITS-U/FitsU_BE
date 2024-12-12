@@ -17,14 +17,14 @@ public interface TransactionClient {
 //    List<MonthlySpendDto> getCategoriesByLast30Days(@RequestHeader("Authorization") String authorization);
 
     // 결제처, 금액, 카테고리
-//    @GetMapping("api/v1/transactions/list/last-30-days")
-//    List<PaymentDto> getPayments(@RequestHeader("Authorization") String authorization);
+    @GetMapping("api/v1/transactions/list/last-30-days")
+    List<PaymentDto> getPayments(@RequestHeader("Authorization") String authorization);
 
     // 금액, 카테고리
 //    @GetMapping("api/v1/transactions/list/by-category/last-30-days")
 //     List<PaymentsDto> getPayments(@RequestHeader("Authorization") String authorization);
 
     // 결제처, 금액
-    @GetMapping("/payments/last-30-days")
-    List<MonthlyPaymentDto> getLast30Days(@RequestHeader("Authorization") String authorization);
+//    @GetMapping("api/v1/transactions/payments/last-30-days")
+//    List<MonthlyPaymentDto> getLast30Days(@RequestHeader("Authorization") String authorization);
 }

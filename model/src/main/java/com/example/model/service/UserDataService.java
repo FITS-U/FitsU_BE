@@ -55,7 +55,7 @@ public class UserDataService {
     }
 
     public List<RecommendResponse> getRecommendData(String authorization){
-        List<MonthlyPaymentDto> sumOfLast30Days = transactionClient.getLast30Days(authorization);
+        List<PaymentDto> sumOfLast30Days = transactionClient.getPayments(authorization);
         UserRequest userRequest = new UserRequest(sumOfLast30Days);
 
         String json;
