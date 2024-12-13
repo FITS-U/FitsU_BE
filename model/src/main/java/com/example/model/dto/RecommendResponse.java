@@ -13,4 +13,5 @@ public class RecommendResponse {
     private Long cardId;
     private String cardName;
     private String details;
+    private String reason;
 }
