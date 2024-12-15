@@ -1,10 +1,7 @@
 package com.example.auth.user.controller;
 
 import com.example.auth.global.JwtUtils;
-import com.example.auth.user.domain.dto.LoginRequest;
-import com.example.auth.user.domain.dto.RegisterRequest;
-import com.example.auth.user.domain.dto.UserNameResponse;
-import com.example.auth.user.domain.dto.VerificationRequest;
+import com.example.auth.user.domain.dto.*;
 import com.example.auth.user.service.UserService;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
@@ -57,4 +54,14 @@ public class UserController {
 
     }
 
+    @DeleteMapping
+    public void deleteUser(@RequestHeader("Authorization") String authorization) {
+       userService.deleteUser(authorization.substring(7));
+    }
+
+    @PutMapping
+    public UserResponse updateUser(@RequestHeader("Authorization") String authorization,
+                                   @RequestBody UserRequest userRequest) {
+       return userService.updateUserInfo(authorization.substring(7), userRequest);
+    }
 }

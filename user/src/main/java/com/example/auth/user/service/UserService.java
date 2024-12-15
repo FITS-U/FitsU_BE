@@ -1,8 +1,6 @@
 package com.example.auth.user.service;
 
-import com.example.auth.user.domain.dto.LoginRequest;
-import com.example.auth.user.domain.dto.RegisterRequest;
-import com.example.auth.user.domain.dto.UserNameResponse;
+import com.example.auth.user.domain.dto.*;
 
 import java.util.UUID;
 
@@ -11,4 +9,6 @@ public interface UserService {
     String login(LoginRequest loginRequest, String certificationCode);
     String register(RegisterRequest registerRequest, String certificationCode);
     UserNameResponse getUserNameFromToken(String token);
+    void deleteUser(String token);
+    UserResponse updateUserInfo(String token, UserRequest userRequest);
 }

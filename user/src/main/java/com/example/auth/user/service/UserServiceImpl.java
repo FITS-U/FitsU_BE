@@ -1,19 +1,20 @@
 package com.example.auth.user.service;
 
 import com.example.auth.global.JwtUtils;
-import com.example.auth.user.domain.dto.LoginRequest;
-import com.example.auth.user.domain.dto.RegisterRequest;
-import com.example.auth.user.domain.dto.UserNameResponse;
+import com.example.auth.user.domain.dto.*;
 import com.example.auth.user.domain.entity.User;
 import com.example.auth.user.repository.UserRepository;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -74,5 +75,31 @@ public class UserServiceImpl implements UserService{
         }
         String userName = user.get().getUserName();
         return new UserNameResponse(userName);
+    }
+
+    @Override
+    public void deleteUser(String token) {
+        userRepository.deleteById(jwtUtils.parseToken(token));
+    }
+
+    @Override
+    @Transactional
+    public UserResponse updateUserInfo(String token, UserRequest userRequest) {
+        String userId = jwtUtils.parseToken(token);
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        user.setUserName(userRequest.getUserName() != null ? userRequest.getUserName() : user.getUserName());
+        user.setPhoneNum(userRequest.getPhoneNum() != null ? userRequest.getPhoneNum() : user.getPhoneNum());
+        user.setNickName(userRequest.getNickName() != null ? userRequest.getNickName() : user.getNickName());
+        user.setRRNum(userRequest.getRRNum() != null ? userRequest.getRRNum() : user.getRRNum());
+
+        userRepository.save(user);
+
+        return UserResponse.builder()
+                .userName(userRequest.getUserName() != null ? userRequest.getUserName() : user.getUserName())
+                .phoneNum(userRequest.getPhoneNum() != null ? userRequest.getPhoneNum() : user.getPhoneNum())
+                .RRNum(userRequest.getRRNum() != null ? userRequest.getRRNum() : user.getRRNum())
+                .nickName(userRequest.getNickName() != null ? userRequest.getNickName() : user.getNickName())
+                .build();
     }
 }
