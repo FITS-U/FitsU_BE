@@ -78,14 +78,14 @@ public class TransactionController {
     }
 
 
-    @PutMapping("/{transactionId}")
-    public TransactionResponse updateCategory(@RequestHeader("Authorization") String authorization,
+    @PostMapping("/{transactionId}")
+    public void updateCategory(@RequestHeader("Authorization") String authorization,
                                               @RequestBody Transaction transaction,
                                               @PathVariable("transactionId") Long transactionId) {
 
         String token = authorization.substring(7);
         String userId = authService.validateUser(token);
-        return transactionService.updateCategory(UUID.fromString(userId), transaction, transactionId);
+        transactionService.updateCategory(UUID.fromString(userId), transaction, transactionId);
     }
 
     // 결제처, 금액, 카테고리

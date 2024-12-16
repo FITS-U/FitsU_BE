@@ -68,7 +68,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionResponse updateCategory(UUID userId, Transaction transaction, Long transactionId) {
+    public void updateCategory(UUID userId, Transaction transaction, Long transactionId) {
         Optional<Transaction> byId = transactionRepository.findById(transactionId);
         if (byId.isPresent()) {
             Transaction existingTransaction = byId.get();
@@ -86,8 +86,7 @@ public class TransactionServiceImpl implements TransactionService {
                     .transactionType(existingTransaction.getTransactionType())
                     .userId(existingTransaction.getUserId())
                     .build();
-            Transaction save = transactionRepository.save(updatingTransaction);
-            return TransactionResponse.from(save);
+            transactionRepository.save(updatingTransaction);
         } else {
             throw new RuntimeException("해당 결제 내역이 없습니다.");
         }

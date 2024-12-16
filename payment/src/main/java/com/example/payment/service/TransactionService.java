@@ -18,6 +18,6 @@ public interface TransactionService {
     List<TransactionResponse> getCategoryPaymentDetails(UUID userId, Long categoryId, int year, int month);
     Double getMonthlySpending(UUID userId, int year, int month);
     List<MonthlySpendDto> getMonthlySpendingByCategoryId(UUID userId , int year , int month);
-    TransactionResponse updateCategory(UUID userId, Transaction transaction, Long transactionId);
+    void updateCategory(UUID userId, Transaction transaction, Long transactionId);
     List<PaymentResponse> getPayments(UUID userId, LocalDateTime startDate);
     }
