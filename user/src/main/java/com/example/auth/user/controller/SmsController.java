@@ -17,8 +17,7 @@ public class SmsController {
     }
 
     @PostMapping("/send")
-    public ResponseEntity<?> SendSMS(@RequestBody SmsRequest request){
+    public void SendSMS(@RequestBody SmsRequest request){
         smsService.sendSms(request);
-        return ResponseEntity.ok("문자를 전송했습니다.");
     }
 }
