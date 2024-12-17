@@ -1,0 +1,30 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: user
+  datasource:
+    url: jdbc:mysql://56.155.9.34:3306/user
+    username: admin
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: rlaguswjdtlstkskdnslRKdkswdkdlTdj
+  expiration: 31536000000
+
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+
+coolsms:
+  api:
+    key: "NCSUPQTUA8JPDN4Y"
+    secret: "SJZ1XHPZJOVECEBFSASLCLHHINP6HSNB"
+  fromnumber: "01076301719"

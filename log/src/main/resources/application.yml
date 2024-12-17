@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://56.155.9.34:5432/log
+    username: postgres
+    password: "0714"
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+server:
+  port: 8088
+
+jwt:
+  secret: rlaguswjdtlstkskdnslRKdkswdkdlTdj
+  expiration: 2592000
+
+auth:
+  service:
+    url: http://localhost:8092/api/v1/auth
