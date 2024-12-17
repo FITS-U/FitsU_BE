@@ -80,14 +80,4 @@ public class AccountController {
         return accountService.getUnlinkedUserAccounts(UUID.fromString(userId), bankIds);
     }
 
-    @PostMapping("/accounts/deduct-balance")
-    public ResponseEntity<BalanceResponse> deductBalance(@RequestHeader("Authorization") String authorization,
-                                                         @RequestBody BalanceRequest request) {
-        String token = authorization.substring(7);
-        String userId = authService.validateUser(token);
-
-        BalanceResponse response = accountService.deductBalance(UUID.fromString(userId), request);
-        return ResponseEntity.ok(response);
-    }
-
 }
