@@ -7,6 +7,7 @@ import com.example.log.repository.LogRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,9 @@ public class LogServiceImpl implements LogService {
     @Override
     public List<LogResponse> getLogs(UUID userId) {
         List<Log> logs = logRepository.findByUserId(userId);
+        if (logs == null || logs.isEmpty()) {
+            return Collections.emptyList();
+        }
         return logs.stream().map(LogResponse::from).toList();
     }
 }
