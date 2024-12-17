@@ -21,5 +21,4 @@ public interface AccountService {
     List<AccountResponse> getLinkedUserAccounts(UUID userId);
     List<AccountResponse> createAccounts(AccountRequest request, UUID userId);
     List<AccountResponse> getUnlinkedUserAccounts(UUID userId, List<Long> bankIds);
-    BalanceResponse deductBalance(UUID userId ,BalanceRequest request);
 }

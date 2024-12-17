@@ -83,21 +83,4 @@ public class AccountServiceImpl implements AccountService {
         return unlinkedAccounts.stream().map(AccountResponse::from).toList();
     }
 
-    @Override
-    public BalanceResponse deductBalance(UUID userId, BalanceRequest request) {
-        UserAccount userAccount = accountRepository.findById(request.getAccountId())
-                .orElseThrow(() -> new IllegalArgumentException("Account not found for ID: " + request.getAccountId()));
-
-        if(userAccount.getBalance() < request.getAmount()) {
-            throw new IllegalArgumentException("Not enough balance");
-        }
-
-        Bank bank = userAccount.getBank();
-
-        userAccount.setBalance(userAccount.getBalance() - request.getAmount());
-        accountRepository.save(userAccount);
-
-        return BalanceResponse.from(userAccount, bank);
-
-    }
 }
