@@ -32,7 +32,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Page<TransactionResponse> getByAccountId(UUID userId, Long accountId) {
-        Pageable pageable = PageRequest.of(0,10);
+        Pageable pageable = PageRequest.of(0,70);
         Page<Transaction> payments = transactionRepository.findByUserIdAndAccountIdOrderByCreatedAtDesc(userId, accountId, pageable);
         return payments.map(TransactionResponse::from);
     }
