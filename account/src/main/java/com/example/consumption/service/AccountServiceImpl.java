@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -71,12 +68,18 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public List<AccountResponse> getLinkedUserAccounts(UUID userId) {
         List<UserAccount> userAccounts = accountRepository.findUserAccountByUserId(userId);
+        if (userAccounts == null || userAccounts.isEmpty()) {
+            return Collections.emptyList();
+        }
         return userAccounts.stream().map(AccountResponse::from).toList();
     }
 
     @Override
     public List<AccountResponse> getUnlinkedUserAccounts(UUID userId, List<Long> bankIds) {
         List<UserAccount> unlinkedAccounts = accountRepository.findUnLinkedUserAccountByUserId(userId, bankIds);
+        if (unlinkedAccounts == null || unlinkedAccounts.isEmpty()) {
+            return Collections.emptyList();
+        }
         return unlinkedAccounts.stream().map(AccountResponse::from).toList();
     }
 
