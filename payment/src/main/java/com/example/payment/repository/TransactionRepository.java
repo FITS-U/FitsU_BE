@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByUserId(UUID userId);
-    Page<Transaction> findByUserIdAndAccountIdOrderByCreatedAtDesc(UUID userId , Long accountId, Pageable pageable);
+    Page<Transaction> findByUserIdAndAccountIdOrderByCreatedAtDesc(UUID userId, Long accountId, Pageable pageable);
 
     @Query(value = "SELECT t FROM Transaction t " +
             "WHERE t.userId = :userId " +
