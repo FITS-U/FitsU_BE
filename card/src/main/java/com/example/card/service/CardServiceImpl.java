@@ -52,10 +52,6 @@ public class CardServiceImpl implements CardService {
 
     }
 
-    @Override
-    public List<CardResponse> getUserCardDetails(Long cardId) {
-        return null;
-    }
 
     @Override
     public List<CategoryResponse> getAllCategories() {

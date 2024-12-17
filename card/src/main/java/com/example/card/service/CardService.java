@@ -12,7 +12,6 @@ import java.util.List;
 @Service
 public interface CardService {
     CardResponse getCardDetails(Long cardId);
-    List<CardResponse> getUserCardDetails(Long cardId);
     List<CategoryResponse> getAllCategories();
     List<CardBenefitResponse> getAllCards();
     ImageUrlResponse getCardImage(Long cardId);
