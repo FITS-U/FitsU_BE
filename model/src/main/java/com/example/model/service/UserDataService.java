@@ -5,6 +5,7 @@ import com.example.model.dto.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,6 +15,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UserDataService {
@@ -76,6 +78,12 @@ public class UserDataService {
                 .bodyToFlux(RecommendResponse.class);
 
         List<RecommendResponse> response = recommendResponseFlux.collectList().block(Duration.of(1, ChronoUnit.MINUTES));
+
+        if (response == null || response.isEmpty()) {
+            throw new RuntimeException("Flask API로부터 광고 데이터를 받지 못했습니다.");
+        }
+        System.out.println(response);
+
         return response;
     }
 }
